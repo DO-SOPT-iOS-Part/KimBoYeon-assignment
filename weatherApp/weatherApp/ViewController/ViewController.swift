@@ -309,20 +309,10 @@ private extension ViewController {
         NSLayoutConstraint.activate([
             locationIconStackView.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: 14),
             locationIconStackView.centerXAnchor.constraint(equalTo: tabBar.centerXAnchor),
+
             locationIconStackView.widthAnchor.constraint(equalToConstant: 52),
             locationIconStackView.bottomAnchor.constraint(equalTo: tabBar.bottomAnchor, constant: -44)
         ])
-        
-//        // 하단 탭 바 현재 뷰 아이콘 레이아웃
-//        NSLayoutConstraint.activate([
-//            nowMyLocationImage.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: 14),
-//            nowMyLocationImage.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor, constant: 161)
-//        ])
-//        // 하단 탭 바 다른 뷰 아이콘 레이아웃
-//        NSLayoutConstraint.activate([
-//            otherLocationImage.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: 14),
-//            otherLocationImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -162)
-//        ])
         
         // 하단 탭 바 위치 리스트 아이콘 레이아웃
         NSLayoutConstraint.activate([
