@@ -18,6 +18,20 @@ class ViewController: UIViewController {
         return backgroundImage
     }()
     
+    // 수직 스크롤뷰 설정
+    private let verticalScrollView: UIScrollView = {
+        let verticalScrollView = UIScrollView()
+        verticalScrollView.translatesAutoresizingMaskIntoConstraints = false
+        return verticalScrollView
+    }()
+    
+    // 컨텐츠뷰 설정
+    private var verticalContentView: UIView = {
+        let verticalContentView = UIView()
+        verticalContentView.translatesAutoresizingMaskIntoConstraints = false
+        return verticalContentView
+    }()
+    
     // 상단 스택뷰 설정
     private var topStackView: UIStackView = {
         let topStackView = UIStackView()
@@ -101,56 +115,20 @@ class ViewController: UIViewController {
     private let horizontalScrollView: UIScrollView = {
         let horizontalScrollView = UIScrollView()
         horizontalScrollView.translatesAutoresizingMaskIntoConstraints = false
+        horizontalScrollView.alwaysBounceHorizontal = true
         return horizontalScrollView
     }()
     
-//    // 세부 수평 스택뷰
-//    private var weatherDetailHorizontalStackView: UIStackView = {
-//        let weatherDetailHorizontalStackView = UIStackView()
-//        weatherDetailHorizontalStackView.translatesAutoresizingMaskIntoConstraints = false
-//        weatherDetailHorizontalStackView.axis = .horizontal
+    // 세부 수평 스택뷰
+    private var weatherDetailHorizontalStackView: UIStackView = {
+        let weatherDetailHorizontalStackView = UIStackView()
+        weatherDetailHorizontalStackView.translatesAutoresizingMaskIntoConstraints = false
+        weatherDetailHorizontalStackView.axis = .horizontal
 //        weatherDetailHorizontalStackView.alignment = .fill
+        // fillEqually면 정해진 뷰 안에 간격을 기준으로 레이아웃이 잡히는거라서,,,
 //        weatherDetailHorizontalStackView.distribution = .equalSpacing
-//        weatherDetailHorizontalStackView.spacing = 22
-//        return weatherDetailHorizontalStackView
-//    }()
-    
-    // 세부 수직 스택뷰
-    private var weatherDetailverticalStackView: UIStackView = {
-        let weatherDetailverticalStackView = UIStackView()
-        weatherDetailverticalStackView.translatesAutoresizingMaskIntoConstraints = false
-        weatherDetailverticalStackView.axis = .vertical
-        weatherDetailverticalStackView.alignment = .fill
-        weatherDetailverticalStackView.distribution = .equalSpacing
-        weatherDetailverticalStackView.spacing = 14
-        return weatherDetailverticalStackView
-    }()
-    
-    // 세부 날씨 시간 레이블
-    private var weatherDetailTimeLabel: UILabel = {
-        let weatherDetailTimeLabel = UILabel()
-        weatherDetailTimeLabel.text = "Now"
-        weatherDetailTimeLabel.textColor = .white
-        weatherDetailTimeLabel.font = UIFont(name: "SFProText-Medium", size: 17)
-        weatherDetailTimeLabel.textAlignment = .center
-        return weatherDetailTimeLabel
-    }()
-    
-    // 세부 날씨 아이콘 이미지
-    private let weatherDetailImage: UIImageView = {
-        let weatherDetailImage = UIImageView()
-        weatherDetailImage.image = UIImage(named: "cloud-night")
-        weatherDetailImage.translatesAutoresizingMaskIntoConstraints = false
-        return weatherDetailImage
-    }()
-    // 세부 날씨 온도 레이블
-    private var weatherDetailTemperatureLabel: UILabel = {
-        let weatherDetailTemperatureLabel = UILabel()
-        weatherDetailTemperatureLabel.text = "19°"
-        weatherDetailTemperatureLabel.textColor = .white
-        weatherDetailTemperatureLabel.font = UIFont(name: "SFProText-Medium", size: 22)
-        weatherDetailTemperatureLabel.textAlignment = .center
-        return weatherDetailTemperatureLabel
+        weatherDetailHorizontalStackView.spacing = 22
+        return weatherDetailHorizontalStackView
     }()
     
     // 하단 탭 바
@@ -203,8 +181,53 @@ class ViewController: UIViewController {
         locationListImage.translatesAutoresizingMaskIntoConstraints = false
         return locationListImage
     }()
+    
+    let item1 = listView()
+    let item2 = listView()
+    let item3 = listView()
+    let item4 = listView()
+    let item5 = listView()
+    let item6 = listView()
+    let item7 = listView()
+    let item8 = listView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.isHidden = true
+        
+        item1.todayTimeLabel.text = "Now"
+        item1.todayWeatherImageView.image = UIImage(named: "cloud-night")
+        item1.todayTemperatureLabel.text = "19°"
+        
+        item2.todayTimeLabel.text = "10시"
+        item2.todayWeatherImageView.image = UIImage(named: "raining")
+        item2.todayTemperatureLabel.text = "20°"
+        
+        item3.todayTimeLabel.text = "11시"
+        item3.todayWeatherImageView.image = UIImage(named: "raining")
+        item3.todayTemperatureLabel.text = "20°"
+        
+        item4.todayTimeLabel.text = "12시"
+        item4.todayWeatherImageView.image = UIImage(named: "raining")
+        item4.todayTemperatureLabel.text = "20°"
+        
+        item5.todayTimeLabel.text = "13시"
+        item5.todayWeatherImageView.image = UIImage(named: "raining")
+        item5.todayTemperatureLabel.text = "20°"
+        
+        item6.todayTimeLabel.text = "14시"
+        item6.todayWeatherImageView.image = UIImage(named: "raining")
+        item6.todayTemperatureLabel.text = "20°"
+        
+        item7.todayTimeLabel.text = "15시"
+        item7.todayWeatherImageView.image = UIImage(named: "raining")
+        item7.todayTemperatureLabel.text = "20°"
+        
+        item8.todayTimeLabel.text = "16시"
+        item8.todayWeatherImageView.image = UIImage(named: "raining")
+        item8.todayTemperatureLabel.text = "20°"
+        
         
         setStyle()
         setLayout()
@@ -218,16 +241,23 @@ class ViewController: UIViewController {
 private extension ViewController {
     
     func setStyle() {
-        self.view.addSubViews(backgroundView, topStackView, rectangleBoxView, tabBar)
+        
+        self.view.addSubViews(backgroundView, tabBar)
+        self.view.addSubview(verticalScrollView)
         self.tabBar.addSubViews(mapImage, locationIconStackView, locationListImage)
         self.locationIconStackView.addArrangedSubview(nowMyLocationImage, otherLocationImage)
-        self.rectangleBoxView.addSubViews(horizontalScrollView, detailTextLabel, scollLneView)
-        self.horizontalScrollView.addSubview(weatherDetailverticalStackView)
-        // forEach는 단순 반복, map은 조건문으로 조건문에 성립하는 결과물을 반환해준다.
+        verticalScrollView.addSubview(verticalContentView)
+        // verticalScrollView.contentSize = verticalContentView.bounds.size
+        verticalContentView.addSubViews(topStackView, rectangleBoxView)
+        // self.backgroundView.addSubview(tabBar)
         self.topStackView.addArrangedSubview(locationNameLabel, temperatureLabel, weatherLabel, weatherDetailLabel)
-        self.weatherDetailverticalStackView.addArrangedSubview(weatherDetailTimeLabel, weatherDetailImage, weatherDetailTemperatureLabel)
+        self.rectangleBoxView.addSubViews(weatherDetailHorizontalStackView, detailTextLabel, scollLneView, horizontalScrollView)
+        weatherDetailHorizontalStackView.addArrangedSubview(item1, item2, item3, item4, item5, item6, item7, item8)
+        horizontalScrollView.addSubview(weatherDetailHorizontalStackView)
+        horizontalScrollView.contentSize = weatherDetailHorizontalStackView.bounds.size
+        //        self.weatherDetailHorizontalStackView.addArrangedSubview(listView)
+        // forEach는 단순 반복, map은 조건문으로 조건문에 성립하는 결과물을 반환해준다.
     }
-    
     func setLayout() {
         
         // 배경 이미지 레이아웃
@@ -243,7 +273,7 @@ private extension ViewController {
             topStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 78),
             topStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             topStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            topStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -522)
+            topStackView.bottomAnchor.constraint(equalTo: rectangleBoxView.topAnchor, constant: -44)
         ])
         
         // 날씨 상세뷰 박스 레이아웃
@@ -251,7 +281,7 @@ private extension ViewController {
             rectangleBoxView.topAnchor.constraint(equalTo: topStackView.bottomAnchor, constant: 44),
             rectangleBoxView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             rectangleBoxView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            rectangleBoxView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -266)
+            rectangleBoxView.heightAnchor.constraint(equalToConstant: 212)
         ])
         
         // 하루 날씨 전반 디테일 박스 레이아웃
@@ -263,33 +293,37 @@ private extension ViewController {
         ])
         
         NSLayoutConstraint.activate([
-            scollLneView.topAnchor.constraint(equalTo: detailTextLabel.bottomAnchor, constant: 11),
-            scollLneView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant:34),
-            scollLneView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
+            scollLneView.topAnchor.constraint(equalTo: detailTextLabel.bottomAnchor, constant: 14),
+            scollLneView.leadingAnchor.constraint(equalTo: rectangleBoxView.leadingAnchor, constant:15),
+            scollLneView.trailingAnchor.constraint(equalTo: rectangleBoxView.trailingAnchor),
             scollLneView.heightAnchor.constraint(equalToConstant: 1)
         ])
-        
+        // 날씨 디테일 수평 스크롤 레이아웃
         NSLayoutConstraint.activate([
             horizontalScrollView.topAnchor.constraint(equalTo: scollLneView.topAnchor, constant: 14),
-            horizontalScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 35),
-            horizontalScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20),
-            horizontalScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -276)
+            horizontalScrollView.leadingAnchor.constraint(equalTo: rectangleBoxView.leadingAnchor),
+            horizontalScrollView.trailingAnchor.constraint(equalTo: rectangleBoxView.trailingAnchor),
+            // horizontalScrollView.widthAnchor.constraint(equalToConstant: 320),
+            horizontalScrollView.heightAnchor.constraint(equalToConstant: 122)
         ])
         
-//        // 날씨 디테일 수평 스택뷰 레이아웃
-//        NSLayoutConstraint.activate([
-//            weatherDetailHorizontalStackView.topAnchor.constraint(equalTo: horizontalScrollView.topAnchor, constant: 0),
-//            weatherDetailHorizontalStackView.leadingAnchor.constraint(equalTo: horizontalScrollView.leadingAnchor, constant: 0),
-//            weatherDetailHorizontalStackView.trailingAnchor.constraint(equalTo: horizontalScrollView.trailingAnchor, constant: 0),
-//            weatherDetailHorizontalStackView.bottomAnchor.constraint(equalTo: horizontalScrollView.bottomAnchor, constant: 0)
-//        ])
-        
-        // 날씨 디테일 수직 스택뷰 레이아웃
+        // 날씨 디테일 수평 스택뷰 레이아웃
         NSLayoutConstraint.activate([
-            weatherDetailverticalStackView.topAnchor.constraint(equalTo: horizontalScrollView.topAnchor, constant: 0),
-            weatherDetailverticalStackView.widthAnchor.constraint(equalToConstant: 44),
-            weatherDetailverticalStackView.bottomAnchor.constraint(equalTo: horizontalScrollView.bottomAnchor, constant: 0)
+            weatherDetailHorizontalStackView.topAnchor.constraint(equalTo: horizontalScrollView.topAnchor),
+            weatherDetailHorizontalStackView.leadingAnchor.constraint(equalTo: horizontalScrollView.leadingAnchor, constant: 12),
+            weatherDetailHorizontalStackView.trailingAnchor.constraint(equalTo: horizontalScrollView.trailingAnchor, constant: -12),
+            weatherDetailHorizontalStackView.bottomAnchor.constraint(equalTo: horizontalScrollView.bottomAnchor)
         ])
+        //
+        //            weatherDetailHorizontalStackView.topAnchor.constraint(equalTo: rectangleBoxView.topAnchor, constant: 80),
+        //            weatherDetailHorizontalStackView.leadingAnchor.constraint(equalTo: rectangleBoxView.leadingAnchor, constant: 15),
+        //            weatherDetailHorizontalStackView.trailingAnchor.constraint(equalTo: rectangleBoxView.trailingAnchor, constant: 0),
+        //            weatherDetailHorizontalStackView.bottomAnchor.constraint(equalTo: rectangleBoxView.bottomAnchor, constant: -10)
+        //            ])
+        //            weatherDetailHorizontalStackView.heightAnchor.constraint(equalToConstant: 320),
+        //            weatherDetailHorizontalStackView.widthAnchor.constraint(equalToConstant: 122)
+        //            ])
+        
         
         // 하단 탭바 레이아웃
         NSLayoutConstraint.activate([
@@ -305,11 +339,31 @@ private extension ViewController {
             mapImage.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor, constant: 10)
         ])
         
+        NSLayoutConstraint.activate([
+            verticalScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            verticalScrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            verticalScrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            verticalScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            verticalContentView.leadingAnchor.constraint(equalTo: verticalScrollView.contentLayoutGuide.leadingAnchor),
+            verticalContentView.trailingAnchor.constraint(equalTo: verticalScrollView.contentLayoutGuide.trailingAnchor),
+            verticalContentView.topAnchor.constraint(equalTo: verticalScrollView.contentLayoutGuide.topAnchor),
+            verticalContentView.bottomAnchor.constraint(equalTo: verticalScrollView.contentLayoutGuide.bottomAnchor)
+        ])
+        
+        verticalContentView.heightAnchor.constraint(equalToConstant: 1500).isActive = true
+        verticalContentView.widthAnchor.constraint(equalTo: verticalScrollView.widthAnchor).isActive = true
+        let contentViewHeight = verticalContentView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
+        contentViewHeight.priority = .defaultLow
+        contentViewHeight.isActive = true
+        
         // 하단 탭 바 위치 관련 아이콘 스택뷰 레이아웃
         NSLayoutConstraint.activate([
             locationIconStackView.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: 14),
             locationIconStackView.centerXAnchor.constraint(equalTo: tabBar.centerXAnchor),
-
+            
             locationIconStackView.widthAnchor.constraint(equalToConstant: 52),
             locationIconStackView.bottomAnchor.constraint(equalTo: tabBar.bottomAnchor, constant: -44)
         ])
