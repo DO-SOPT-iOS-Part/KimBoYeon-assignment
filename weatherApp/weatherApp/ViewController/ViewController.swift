@@ -124,9 +124,9 @@ class ViewController: UIViewController {
         let weatherDetailHorizontalStackView = UIStackView()
         weatherDetailHorizontalStackView.translatesAutoresizingMaskIntoConstraints = false
         weatherDetailHorizontalStackView.axis = .horizontal
-//        weatherDetailHorizontalStackView.alignment = .fill
+        //        weatherDetailHorizontalStackView.alignment = .fill
         // fillEqually면 정해진 뷰 안에 간격을 기준으로 레이아웃이 잡히는거라서,,,
-//        weatherDetailHorizontalStackView.distribution = .equalSpacing
+        //        weatherDetailHorizontalStackView.distribution = .equalSpacing
         weatherDetailHorizontalStackView.spacing = 22
         return weatherDetailHorizontalStackView
     }()
@@ -175,12 +175,14 @@ class ViewController: UIViewController {
     }()
     
     // 하단 탭 바 위치 리스트 아이콘
-    private let locationListImage: UIImageView = {
-        let locationListImage = UIImageView()
-        locationListImage.image = UIImage(named: "location-list")
-        locationListImage.translatesAutoresizingMaskIntoConstraints = false
-        return locationListImage
+    private let locationListImageButton: UIButton = {
+        let locationListImageButton = UIButton()
+        locationListImageButton.setImage(UIImage(named: "location-list"), for: .normal)
+        locationListImageButton.translatesAutoresizingMaskIntoConstraints = false
+        locationListImageButton.isUserInteractionEnabled = true
+        return locationListImageButton
     }()
+    
     
     let item1 = listView()
     let item2 = listView()
@@ -191,10 +193,9 @@ class ViewController: UIViewController {
     let item7 = listView()
     let item8 = listView()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.navigationController?.navigationBar.isHidden = true
         
         item1.todayTimeLabel.text = "Now"
         item1.todayWeatherImageView.image = UIImage(named: "cloud-night")
@@ -228,9 +229,16 @@ class ViewController: UIViewController {
         item8.todayWeatherImageView.image = UIImage(named: "raining")
         item8.todayTemperatureLabel.text = "20°"
         
+        self.navigationController?.navigationBar.isHidden = true
+        locationListImageButton.addTarget(self, action: #selector(locationListButtonTapped), for: .touchUpInside)
         
         setStyle()
         setLayout()
+    }
+    
+    @objc
+    func locationListButtonTapped() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -242,9 +250,8 @@ private extension ViewController {
     
     func setStyle() {
         
-        self.view.addSubViews(backgroundView, tabBar)
-        self.view.addSubview(verticalScrollView)
-        self.tabBar.addSubViews(mapImage, locationIconStackView, locationListImage)
+        self.view.addSubViews(backgroundView, verticalScrollView, tabBar)
+        self.tabBar.addSubViews(mapImage, locationIconStackView, locationListImageButton)
         self.locationIconStackView.addArrangedSubview(nowMyLocationImage, otherLocationImage)
         verticalScrollView.addSubview(verticalContentView)
         // verticalScrollView.contentSize = verticalContentView.bounds.size
@@ -370,10 +377,10 @@ private extension ViewController {
         
         // 하단 탭 바 위치 리스트 아이콘 레이아웃
         NSLayoutConstraint.activate([
-            locationListImage.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: 4),
-            locationListImage.trailingAnchor.constraint(equalTo: tabBar.trailingAnchor, constant: -9)
+            locationListImageButton.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: 4),
+            locationListImageButton.trailingAnchor.constraint(equalTo: tabBar.trailingAnchor, constant: -9)
         ])
-        
     }
+
 }
 
