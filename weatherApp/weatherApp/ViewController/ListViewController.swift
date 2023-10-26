@@ -237,9 +237,9 @@ private extension ListViewController {
         ])
     }
     
-    @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        print("Hello World")
-    }
+//    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+//        print("Hello World")
+//    }
     
     @objc
     func pushToViewController() {
