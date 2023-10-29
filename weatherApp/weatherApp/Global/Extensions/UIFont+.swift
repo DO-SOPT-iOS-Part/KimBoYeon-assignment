@@ -7,34 +7,40 @@
 
 import UIKit
 
+// MARK: - 폰트 명을 열거형으로 선언
+
+enum AppFontName: String {
+    
+    case regularFont = "SFProText-Regular"
+    case mediumFont = "SFProText-Medium"
+    case boldFont = "SFProText-Bold"
+    case thinFont = "SFProText-Thin"
+    case lightFont = "SFProText-Light"
+    
+    var name: String {
+        return self.rawValue
+    }
+}
+
 extension UIFont {
-    static func sfPro(size fontSize: CGFloat, weight: UIFont.Weight) -> UIFont {
-        for family in UIFont.familyNames {
-            print(family)
-            
-            for sub in UIFont.fontNames(forFamilyName: family) {
-                print("====> \(sub)")
-            }
-        }
-        
-        let familyName = "SFProText"
-        
-        var weightString: String
-        switch weight {
-        case .bold:
-            weightString = "Bold"
-        case .medium:
-            weightString = "Medium"
-        case .regular:
-            weightString = "Regular"
-        case .light:
-            weightString = "Light"
-        case .thin:
-            weightString = "Thin"
-        default:
-            weightString = "Medium"
-        }
-        
-        return UIFont(name: "\(familyName)-\(weightString)", size: fontSize)!
+
+    class func regular(size: CGFloat) -> UIFont {
+        return UIFont(name: AppFontName.regularFont.rawValue, size: size)!
+    }
+
+    class func medium(size: CGFloat) -> UIFont {
+        return UIFont(name: AppFontName.mediumFont.rawValue, size: size)!
+    }
+
+    class func bold(size: CGFloat) -> UIFont {
+        return UIFont(name: AppFontName.boldFont.rawValue, size: size)!
+    }
+    
+    class func light(size: CGFloat) -> UIFont {
+        return UIFont(name: AppFontName.lightFont.rawValue, size: size)!
+    }
+    
+    class func thin(size: CGFloat) -> UIFont {
+        return UIFont(name: AppFontName.thinFont.rawValue, size: size)!
     }
 }

@@ -24,7 +24,7 @@ class listView: UIView {
     let todayTimeLabel: UILabel = {
         let timeLabel = UILabel()
         timeLabel.text = ""
-        timeLabel.font = UIFont(name: "SFProText-Medium", size: 17)
+        timeLabel.font = .medium(size: 17)
         timeLabel.textColor = .white
         timeLabel.textAlignment = .center
         return timeLabel
@@ -39,7 +39,7 @@ class listView: UIView {
     let todayTemperatureLabel: UILabel = {
         let temperatureLabel = UILabel()
         temperatureLabel.text = ""
-        temperatureLabel.font = UIFont(name: "SFProText-Medium", size: 22)
+        temperatureLabel.font = .medium(size: 22)
         temperatureLabel.textColor = .white
         temperatureLabel.textAlignment = .center
         return temperatureLabel

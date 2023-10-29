@@ -22,7 +22,7 @@ class ListViewController: UIViewController {
         var titleLabel = UILabel()
         titleLabel.text = "날씨"
         titleLabel.textColor = .white
-        titleLabel.font = UIFont(name: "SFProText-Bold", size: 36)
+        titleLabel.font = .bold(size: 36)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textAlignment = .center
         return titleLabel
@@ -69,7 +69,7 @@ class ListViewController: UIViewController {
         var myLocationLabel = UILabel()
         myLocationLabel.text = "나의 위치"
         myLocationLabel.textColor = .white
-        myLocationLabel.font = UIFont(name: "SFProText-Bold", size: 24)
+        myLocationLabel.font = .bold(size: 24)
         myLocationLabel.translatesAutoresizingMaskIntoConstraints = false
         myLocationLabel.textAlignment = .center
         return myLocationLabel
@@ -79,7 +79,7 @@ class ListViewController: UIViewController {
         var myLocationNameLabel = UILabel()
         myLocationNameLabel.text = "고양시"
         myLocationNameLabel.textColor = .white
-        myLocationNameLabel.font = UIFont(name: "SFProText-Medium", size: 17)
+        myLocationNameLabel.font = .medium(size: 17)
         myLocationNameLabel.translatesAutoresizingMaskIntoConstraints = false
         myLocationNameLabel.textAlignment = .center
         return myLocationNameLabel
@@ -89,7 +89,7 @@ class ListViewController: UIViewController {
         var myLocationConditionLabel = UILabel()
         myLocationConditionLabel.text = "흐림"
         myLocationConditionLabel.textColor = .white
-        myLocationConditionLabel.font = UIFont(name: "SFProText-Medium", size: 16)
+        myLocationConditionLabel.font = .medium(size: 16)
         myLocationConditionLabel.translatesAutoresizingMaskIntoConstraints = false
         myLocationConditionLabel.textAlignment = .center
         return myLocationConditionLabel
@@ -99,7 +99,7 @@ class ListViewController: UIViewController {
         var myLocationAverageTemperatureLabel = UILabel()
         myLocationAverageTemperatureLabel.text = "21°"
         myLocationAverageTemperatureLabel.textColor = .white
-        myLocationAverageTemperatureLabel.font = UIFont(name: "SFProText-Light", size: 52)
+        myLocationAverageTemperatureLabel.font = .light(size: 52)
         myLocationAverageTemperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         myLocationAverageTemperatureLabel.textAlignment = .center
         return myLocationAverageTemperatureLabel
@@ -109,7 +109,7 @@ class ListViewController: UIViewController {
         var myLocationMinimumTemperatureLabel = UILabel()
         myLocationMinimumTemperatureLabel.text = "최저:15°"
         myLocationMinimumTemperatureLabel.textColor = .white
-        myLocationMinimumTemperatureLabel.font = UIFont(name: "SFProText-Medium", size: 15)
+        myLocationMinimumTemperatureLabel.font = .medium(size: 15)
         myLocationMinimumTemperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         myLocationMinimumTemperatureLabel.textAlignment = .center
         return myLocationMinimumTemperatureLabel
@@ -119,7 +119,7 @@ class ListViewController: UIViewController {
         var myLocationMaximumTemperatureLabel = UILabel()
         myLocationMaximumTemperatureLabel.text = "최고:29°"
         myLocationMaximumTemperatureLabel.textColor = .white
-        myLocationMaximumTemperatureLabel.font = UIFont(name: "SFProText-Medium", size: 15)
+        myLocationMaximumTemperatureLabel.font = .medium(size: 15)
         myLocationMaximumTemperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         myLocationMaximumTemperatureLabel.textAlignment = .center
         return myLocationMaximumTemperatureLabel

@@ -50,7 +50,7 @@ class DetailViewController: UIViewController {
         let locationNameLabel = UILabel()
         locationNameLabel.text = "의정부시"
         locationNameLabel.textColor = .white
-        locationNameLabel.font = UIFont(name: "SFProText-Regular", size: 36)
+        locationNameLabel.font = .regular(size: 36)
         locationNameLabel.textAlignment = .center
         return locationNameLabel
     }()
@@ -59,7 +59,7 @@ class DetailViewController: UIViewController {
         let temperatureLabel = UILabel()
         temperatureLabel.text = "21°"
         temperatureLabel.textColor = .white
-        temperatureLabel.font = UIFont(name: "SFProText-Thin", size: 102)
+        temperatureLabel.font = .thin(size: 102)
         temperatureLabel.textAlignment = .center
         return temperatureLabel
     }()
@@ -68,7 +68,7 @@ class DetailViewController: UIViewController {
         let weatherLabel = UILabel()
         weatherLabel.text = "흐림"
         weatherLabel.textColor = .white
-        weatherLabel.font = UIFont(name: "SFProText-Regular", size: 24)
+        weatherLabel.font = .regular(size: 24)
         weatherLabel.textAlignment = .center
         return weatherLabel
     }()
@@ -77,7 +77,7 @@ class DetailViewController: UIViewController {
         let weatherDetailLabel = UILabel()
         weatherDetailLabel.text = "최고:29°  최저:15°"
         weatherDetailLabel.textColor = .white
-        weatherDetailLabel.font = UIFont(name: "SFProText-Medium", size: 24)
+        weatherDetailLabel.font = .medium(size: 24)
         weatherDetailLabel.textAlignment = .center
         return weatherDetailLabel
     }()
@@ -100,7 +100,7 @@ class DetailViewController: UIViewController {
         detailTextLabel.textColor = .white
         detailTextLabel.numberOfLines = 0
         detailTextLabel.lineBreakMode = .byCharWrapping
-        detailTextLabel.font = UIFont(name: "SFProText-Regular", size: 18)
+        detailTextLabel.font = .regular(size: 18)
         detailTextLabel.textAlignment = .left
         return detailTextLabel
     }()
