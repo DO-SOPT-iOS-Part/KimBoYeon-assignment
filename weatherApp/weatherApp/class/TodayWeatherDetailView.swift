@@ -63,9 +63,9 @@ class listView: UIView {
     func setLayout() {
         NSLayoutConstraint.activate([
             weatherDetailverticalStackView.topAnchor.constraint(equalTo: self.topAnchor),
-                        weatherDetailverticalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-                        weatherDetailverticalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-                        weatherDetailverticalStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            weatherDetailverticalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            weatherDetailverticalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            weatherDetailverticalStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
         ])
         
     }

@@ -124,7 +124,7 @@ class ListViewController: UIViewController {
         myLocationMaximumTemperatureLabel.textAlignment = .center
         return myLocationMaximumTemperatureLabel
     }()
-
+    
     @objc
     func locationListTapped() {
         pushToViewController()
@@ -134,8 +134,8 @@ class ListViewController: UIViewController {
         super.viewDidLoad()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(locationListTapped))
-            locationListImageView.isUserInteractionEnabled = true
-            locationListImageView.addGestureRecognizer(tapGesture)
+        locationListImageView.isUserInteractionEnabled = true
+        locationListImageView.addGestureRecognizer(tapGesture)
         
         setStyle()
         setLayout()
@@ -237,9 +237,6 @@ private extension ListViewController {
         ])
     }
     
-//    @objc func handleTap(_ sender: UITapGestureRecognizer) {
-//        print("Hello World")
-//    }
     
     @objc
     func pushToViewController() {

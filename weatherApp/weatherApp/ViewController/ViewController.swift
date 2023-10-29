@@ -277,7 +277,6 @@ private extension ViewController {
             topStackView.topAnchor.constraint(equalTo: verticalContentView.topAnchor, constant: 78),
             topStackView.leadingAnchor.constraint(equalTo: verticalContentView.leadingAnchor, constant: 0),
             topStackView.trailingAnchor.constraint(equalTo: verticalContentView.trailingAnchor, constant: 0)
-            //topStackView.bottomAnchor.constraint(equalTo: rectangleBoxView.topAnchor, constant: -44)
         ])
         
         // 날씨 상세뷰 박스 레이아웃
@@ -285,7 +284,6 @@ private extension ViewController {
             rectangleBoxView.topAnchor.constraint(equalTo: topStackView.bottomAnchor, constant: 44),
             rectangleBoxView.leadingAnchor.constraint(equalTo: verticalContentView.leadingAnchor, constant: 20),
             rectangleBoxView.trailingAnchor.constraint(equalTo: verticalContentView.trailingAnchor, constant: -20),
-            //rectangleBoxView.bottomAnchor.constraint(equalTo: verticalContentView.bottomAnchor)
             rectangleBoxView.heightAnchor.constraint(equalToConstant: 212)
         ])
         
@@ -309,8 +307,6 @@ private extension ViewController {
             horizontalScrollView.leadingAnchor.constraint(equalTo: rectangleBoxView.leadingAnchor),
             horizontalScrollView.trailingAnchor.constraint(equalTo: rectangleBoxView.trailingAnchor),
             horizontalScrollView.bottomAnchor.constraint(equalTo: rectangleBoxView.bottomAnchor, constant: -10)
-            // horizontalScrollView.widthAnchor.constraint(equalToConstant: 320),
-            //horizontalScrollView.heightAnchor.constraint(equalToConstant: 122)
         ])
         
         // 날씨 디테일 수평 스택뷰 레이아웃
@@ -350,7 +346,6 @@ private extension ViewController {
             verticalContentView.bottomAnchor.constraint(equalTo: verticalScrollView.contentLayoutGuide.bottomAnchor)
         ])
         
-        //verticalContentView.heightAnchor.constraint(equalToConstant: 1000).isActive = true
         verticalContentView.widthAnchor.constraint(equalTo: verticalScrollView.widthAnchor).isActive = true
         let contentViewHeight = verticalContentView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
         contentViewHeight.priority = .defaultLow
@@ -371,6 +366,6 @@ private extension ViewController {
             locationListImageButton.trailingAnchor.constraint(equalTo: tabBar.trailingAnchor, constant: -9)
         ])
     }
-
+    
 }
 
