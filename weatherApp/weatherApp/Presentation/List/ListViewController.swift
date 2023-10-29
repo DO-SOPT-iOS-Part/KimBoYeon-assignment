@@ -240,8 +240,8 @@ private extension ListViewController {
     
     @objc
     func pushToViewController() {
-        let ViewController = ViewController()
-        self.navigationController?.pushViewController(ViewController, animated: true)
+        let DetailViewController = DetailViewController()
+        self.navigationController?.pushViewController(DetailViewController, animated: true)
     }
     
 }

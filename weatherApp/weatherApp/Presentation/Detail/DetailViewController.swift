@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  DetailViewController.swift
 //  weatherApp
 //
 //  Created by 김보연 on 10/15/23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class DetailViewController: UIViewController {
     
     // 배경 이미지 설정
     private let backgroundView: UIImageView = {
@@ -245,7 +245,7 @@ class ViewController: UIViewController {
     }
 }
 
-private extension ViewController {
+private extension DetailViewController {
     
     func setStyle() {
         
