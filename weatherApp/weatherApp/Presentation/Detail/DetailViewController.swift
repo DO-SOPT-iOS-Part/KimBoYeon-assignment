@@ -23,7 +23,7 @@ class DetailViewController: UIViewController {
     private var weatherDetailLabel = UILabel()
     private var rectangleBoxView = UIView()
     private var detailTextLabel = UILabel()
-    private var scollLneView = UIView()
+    private var detailWeatherDivider = UIView()
     private let horizontalScrollView = UIScrollView()
     private var weatherDetailHorizontalStackView = UIStackView()
     private var tabBar = UIView()
@@ -33,14 +33,14 @@ class DetailViewController: UIViewController {
     private let otherLocationImage = UIImageView()
     private let locationListImageButton = UIButton()
     
-    let item1 = listView()
-    let item2 = listView()
-    let item3 = listView()
-    let item4 = listView()
-    let item5 = listView()
-    let item6 = listView()
-    let item7 = listView()
-    let item8 = listView()
+    let item1 = itemListView()
+    let item2 = itemListView()
+    let item3 = itemListView()
+    let item4 = itemListView()
+    let item5 = itemListView()
+    let item6 = itemListView()
+    let item7 = itemListView()
+    let item8 = itemListView()
     
     
     override func viewDidLoad() {
@@ -100,7 +100,6 @@ private extension DetailViewController {
     func setStyle() {
         
         // 배경 이미지 설정
-        
         backgroundView.do {
             $0.frame = UIScreen.main.bounds
             $0.image = UIImage(named: "Img-1x")
@@ -177,7 +176,7 @@ private extension DetailViewController {
             $0.textAlignment = .left
         }
         
-        scollLneView.do {
+        detailWeatherDivider.do {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.layer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.25).cgColor
             $0.layer.masksToBounds = false
@@ -245,116 +244,98 @@ private extension DetailViewController {
         self.locationIconStackView.addArrangedSubview(nowMyLocationImage, otherLocationImage)
         verticalContentView.addSubViews(topStackView, rectangleBoxView)
         self.topStackView.addArrangedSubview(locationNameLabel, temperatureLabel, weatherLabel, weatherDetailLabel)
-        self.rectangleBoxView.addSubViews(weatherDetailHorizontalStackView, detailTextLabel, scollLneView, horizontalScrollView)
+        self.rectangleBoxView.addSubViews(weatherDetailHorizontalStackView, detailTextLabel, detailWeatherDivider, horizontalScrollView)
         verticalScrollView.addSubview(verticalContentView)
         verticalScrollView.contentSize = verticalContentView.bounds.size
         weatherDetailHorizontalStackView.addArrangedSubview(item1, item2, item3, item4, item5, item6, item7, item8)
         horizontalScrollView.addSubview(weatherDetailHorizontalStackView)
         horizontalScrollView.contentSize = weatherDetailHorizontalStackView.bounds.size
-        // forEach는 단순 반복, map은 조건문으로 조건문에 성립하는 결과물을 반환해준다.
         
         // 배경 이미지 레이아웃
-        NSLayoutConstraint.activate([
-            backgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        ])
+        backgroundView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
         
         // 스택뷰 레이아웃
-        NSLayoutConstraint.activate([
-            topStackView.topAnchor.constraint(equalTo: verticalContentView.topAnchor, constant: 78),
-            topStackView.leadingAnchor.constraint(equalTo: verticalContentView.leadingAnchor, constant: 0),
-            topStackView.trailingAnchor.constraint(equalTo: verticalContentView.trailingAnchor, constant: 0)
-        ])
+        topStackView.snp.makeConstraints {
+            $0.top.equalTo(verticalContentView).inset(78)
+            $0.leading.trailing.equalTo(verticalContentView)
+        }
         
         // 날씨 상세뷰 박스 레이아웃
-        NSLayoutConstraint.activate([
-            rectangleBoxView.topAnchor.constraint(equalTo: topStackView.bottomAnchor, constant: 44),
-            rectangleBoxView.leadingAnchor.constraint(equalTo: verticalContentView.leadingAnchor, constant: 20),
-            rectangleBoxView.trailingAnchor.constraint(equalTo: verticalContentView.trailingAnchor, constant: -20),
-            rectangleBoxView.heightAnchor.constraint(equalToConstant: 212)
-        ])
-        
+        rectangleBoxView.snp.makeConstraints {
+            $0.top.equalTo(topStackView.snp.bottom).offset(44)
+            $0.leading.trailing.equalTo(verticalContentView).inset(20)
+            $0.height.equalTo(212)
+        }
+
         // 하루 날씨 전반 디테일 박스 레이아웃
-        NSLayoutConstraint.activate([
-            detailTextLabel.topAnchor.constraint(equalTo: rectangleBoxView.topAnchor, constant: 10),
-            detailTextLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 35),
-            detailTextLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -35)
-            //detailTextLabel.heightAnchor.constraint(equalToConstant: 45)
-        ])
-        
-        NSLayoutConstraint.activate([
-            scollLneView.topAnchor.constraint(equalTo: detailTextLabel.bottomAnchor, constant: 14),
-            scollLneView.leadingAnchor.constraint(equalTo: rectangleBoxView.leadingAnchor, constant:15),
-            scollLneView.trailingAnchor.constraint(equalTo: rectangleBoxView.trailingAnchor),
-            scollLneView.heightAnchor.constraint(equalToConstant: 1)
-        ])
+        detailTextLabel.snp.makeConstraints {
+            $0.top.equalTo(rectangleBoxView).inset(10)
+            $0.leading.trailing.equalTo(rectangleBoxView).inset(15)
+        }
+
+        // Divider 레이아웃
+        detailWeatherDivider.snp.makeConstraints {
+            $0.top.equalTo(detailTextLabel.snp.bottom).offset(14)
+            $0.leading.equalTo(rectangleBoxView).inset(15)
+            $0.trailing.equalTo(rectangleBoxView)
+            $0.height.equalTo(1)
+        }
+
         // 날씨 디테일 수평 스크롤 레이아웃
-        NSLayoutConstraint.activate([
-            horizontalScrollView.topAnchor.constraint(equalTo: scollLneView.topAnchor, constant: 14),
-            horizontalScrollView.leadingAnchor.constraint(equalTo: rectangleBoxView.leadingAnchor),
-            horizontalScrollView.trailingAnchor.constraint(equalTo: rectangleBoxView.trailingAnchor),
-            horizontalScrollView.bottomAnchor.constraint(equalTo: rectangleBoxView.bottomAnchor, constant: -10)
-        ])
+        horizontalScrollView.snp.makeConstraints {
+            $0.top.equalTo(detailWeatherDivider).inset(14)
+            $0.leading.trailing.equalTo(rectangleBoxView)
+            $0.bottom.equalTo(rectangleBoxView).inset(10)
+        }
         
         // 날씨 디테일 수평 스택뷰 레이아웃
-        NSLayoutConstraint.activate([
-            weatherDetailHorizontalStackView.topAnchor.constraint(equalTo: horizontalScrollView.topAnchor),
-            weatherDetailHorizontalStackView.leadingAnchor.constraint(equalTo: horizontalScrollView.leadingAnchor, constant: 12),
-            weatherDetailHorizontalStackView.trailingAnchor.constraint(equalTo: horizontalScrollView.trailingAnchor, constant: -12),
-            weatherDetailHorizontalStackView.bottomAnchor.constraint(equalTo: horizontalScrollView.bottomAnchor)
-        ])
-        
+        weatherDetailHorizontalStackView.snp.makeConstraints {
+            $0.top.equalTo(horizontalScrollView)
+            $0.leading.trailing.equalTo(horizontalScrollView).inset(12)
+            $0.bottom.equalTo(horizontalScrollView)
+        }
         
         // 하단 탭바 레이아웃
-        NSLayoutConstraint.activate([
-            tabBar.heightAnchor.constraint(equalToConstant: 82),
-            tabBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            tabBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            tabBar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-        ])
+        tabBar.snp.makeConstraints {
+            $0.height.equalTo(82)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
         
         // 하단 탭 바 지도 아이콘 레이아웃
-        NSLayoutConstraint.activate([
-            mapImage.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: 4),
-            mapImage.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor, constant: 10)
-        ])
+        mapImage.snp.makeConstraints {
+            $0.top.equalTo(tabBar.snp.top).inset(4)
+            $0.leading.equalTo(tabBar.snp.leading).inset(10)
+        }
         
-        NSLayoutConstraint.activate([
-            verticalScrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            verticalScrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            verticalScrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            verticalScrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-        ])
+        // 수직스크롤뷰 레이아웃
+        verticalScrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
         
-        NSLayoutConstraint.activate([
-            verticalContentView.leadingAnchor.constraint(equalTo: verticalScrollView.contentLayoutGuide.leadingAnchor),
-            verticalContentView.trailingAnchor.constraint(equalTo: verticalScrollView.contentLayoutGuide.trailingAnchor),
-            verticalContentView.topAnchor.constraint(equalTo: verticalScrollView.contentLayoutGuide.topAnchor),
-            verticalContentView.bottomAnchor.constraint(equalTo: verticalScrollView.contentLayoutGuide.bottomAnchor)
-        ])
+        // 수직스크롤뷰의 컨텐츠뷰 레이아웃
+        verticalContentView.snp.makeConstraints {
+            $0.edges.equalTo(verticalScrollView)
+        }
         
-        verticalContentView.widthAnchor.constraint(equalTo: verticalScrollView.widthAnchor).isActive = true
-        let contentViewHeight = verticalContentView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
-        contentViewHeight.priority = .defaultLow
-        contentViewHeight.isActive = true
+        verticalContentView.snp.makeConstraints {
+            $0.width.equalTo(verticalScrollView.snp.width)
+            $0.height.greaterThanOrEqualTo(view.snp.height).priority(.low)
+        }
         
         // 하단 탭 바 위치 관련 아이콘 스택뷰 레이아웃
-        NSLayoutConstraint.activate([
-            locationIconStackView.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: 14),
-            locationIconStackView.centerXAnchor.constraint(equalTo: tabBar.centerXAnchor),
-            
-            locationIconStackView.widthAnchor.constraint(equalToConstant: 52),
-            locationIconStackView.bottomAnchor.constraint(equalTo: tabBar.bottomAnchor, constant: -44)
-        ])
+        locationIconStackView.snp.makeConstraints {
+            $0.top.equalTo(tabBar).inset(14)
+            $0.centerX.equalTo(tabBar)
+            $0.width.equalTo(52)
+        }
         
         // 하단 탭 바 위치 리스트 아이콘 레이아웃
-        NSLayoutConstraint.activate([
-            locationListImageButton.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: 4),
-            locationListImageButton.trailingAnchor.constraint(equalTo: tabBar.trailingAnchor, constant: -9)
-        ])
+        locationListImageButton.snp.makeConstraints {
+            $0.top.equalTo(tabBar).inset(4)
+            $0.trailing.equalTo(tabBar).inset(9)
+        }
     }
-    
 }
 

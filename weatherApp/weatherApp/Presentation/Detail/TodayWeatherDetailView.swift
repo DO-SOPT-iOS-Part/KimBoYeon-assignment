@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class listView: UIView {
+class itemListView: UIView {
     
     private var weatherDetailverticalStackView = UIStackView()
     let todayTimeLabel = UILabel()
@@ -65,13 +65,10 @@ class listView: UIView {
         weatherDetailverticalStackView.addArrangedSubview(todayTimeLabel, todayWeatherImageView, todayTemperatureLabel)
         
         addSubview(weatherDetailverticalStackView)
-        NSLayoutConstraint.activate([
-            weatherDetailverticalStackView.topAnchor.constraint(equalTo: self.topAnchor),
-            weatherDetailverticalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            weatherDetailverticalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            weatherDetailverticalStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-        ])
         
+        weatherDetailverticalStackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 }
 

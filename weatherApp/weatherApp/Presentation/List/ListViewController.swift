@@ -38,6 +38,8 @@ class ListViewController: UIViewController {
         locationListImageView.isUserInteractionEnabled = true
         locationListImageView.addGestureRecognizer(tapGesture)
         
+        self.navigationController?.navigationBar.isHidden = true
+        
         setStyle()
         setLayout()
     }
@@ -143,91 +145,89 @@ private extension ListViewController {
     
     func setLayout() {
         
-        view.addSubViews(editerImageView, titleLabel, scrollView, locationListImageView)
+        view.addSubViews(editerImageView, titleLabel, searchBar, scrollView, locationListImageView)
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size
-        view.addSubview(searchBar)
+//        view.addSubview(searchBar)
         contentView.addSubview(locationListImageView)
         locationListImageView.addSubViews(myLocationLabel, myLocationNameLabel, myLocationConditionLabel, myLocationAverageTemperatureLabel, myLocationMinimumTemperatureLabel, myLocationMaximumTemperatureLabel)
         
         
-        NSLayoutConstraint.activate([
-            editerImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 52),
-            editerImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
-        ])
+        // 상단 에디터 아이콘 레이아웃
+        editerImageView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(52)
+            $0.trailing.equalToSuperview().offset(-10)
+        }
         
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 97),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
-        ])
+        // "날씨" 타이틀 레이아웃
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(97)
+            $0.leading.equalToSuperview().offset(20)
+        }
         
-        NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15),
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12)
-        ])
+        // 서치바 레이아웃
+        searchBar.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(15)
+            $0.leading.trailing.equalToSuperview().inset(12)
+        }
         
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 204),
-            scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-        ])
+        // 수직스크롤뷰 레이아웃
+        scrollView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(204)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
         
-        NSLayoutConstraint.activate([
-            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor)
-        ])
+        // 수직스크롤뷰의 컨텐츠뷰 레이아웃
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView)
+        }
         
-        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        let contentViewHeight = contentView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
-        contentViewHeight.priority = .defaultLow
-        contentViewHeight.isActive = true
+        contentView.snp.makeConstraints {
+            $0.width.equalTo(scrollView.snp.width)
+            $0.height.greaterThanOrEqualTo(view.snp.height).priority(.low)
+        }
         
-        NSLayoutConstraint.activate([
-            locationListImageView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 15),
-            locationListImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            locationListImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            locationListImageView.heightAnchor.constraint(equalToConstant: 117)
-        ])
+        // 리스트카드뷰 레이아웃
+        locationListImageView.snp.makeConstraints {
+            $0.top.equalTo(scrollView).offset(15)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
         
-        NSLayoutConstraint.activate([
-            myLocationLabel.topAnchor.constraint(equalTo: locationListImageView.topAnchor, constant: 10),
-            myLocationLabel.leadingAnchor.constraint(equalTo: locationListImageView.leadingAnchor, constant: 16),
-            myLocationLabel.bottomAnchor.constraint(equalTo: locationListImageView.bottomAnchor, constant: -75)
-        ])
+        // "나의 위치" 레이블 레이아웃
+        myLocationLabel.snp.makeConstraints {
+            $0.top.equalTo(locationListImageView).offset(10)
+            $0.leading.equalTo(locationListImageView).offset(16)
+        }
         
-        NSLayoutConstraint.activate([
-            myLocationNameLabel.topAnchor.constraint(equalTo: myLocationLabel.bottomAnchor, constant: 2),
-            myLocationNameLabel.leadingAnchor.constraint(equalTo: locationListImageView.leadingAnchor, constant: 16),
-            myLocationNameLabel.bottomAnchor.constraint(equalTo: locationListImageView.bottomAnchor, constant: -53)
-        ])
+        // "고양시" 레이블 레이아웃
+        myLocationNameLabel.snp.makeConstraints {
+            $0.top.equalTo(myLocationLabel.snp.bottom).offset(2)
+            $0.leading.equalTo(locationListImageView).offset(16)
+        }
         
-        NSLayoutConstraint.activate([
-            myLocationConditionLabel.topAnchor.constraint(equalTo: myLocationNameLabel.bottomAnchor, constant: 23),
-            myLocationConditionLabel.leadingAnchor.constraint(equalTo: locationListImageView.leadingAnchor, constant: 16),
-            myLocationConditionLabel.bottomAnchor.constraint(equalTo: locationListImageView.bottomAnchor, constant: -10)
-        ])
+        // 날씨 상태 레이블 레이아웃
+        myLocationConditionLabel.snp.makeConstraints {
+            $0.bottom.equalTo(locationListImageView).inset(10)
+            $0.leading.equalTo(locationListImageView).offset(16)
+        }
         
-        NSLayoutConstraint.activate([
-            myLocationAverageTemperatureLabel.topAnchor.constraint(equalTo: locationListImageView.topAnchor, constant: 4),
-            myLocationAverageTemperatureLabel.trailingAnchor.constraint(equalTo: locationListImageView.trailingAnchor, constant: -16),
-            myLocationAverageTemperatureLabel.bottomAnchor.constraint(equalTo: locationListImageView.bottomAnchor, constant: -53)
-        ])
+        // 평균 기온 레이블 레이아웃
+        myLocationAverageTemperatureLabel.snp.makeConstraints {
+            $0.top.equalTo(locationListImageView).offset(4)
+            $0.trailing.equalTo(locationListImageView).inset(16)
+        }
+
+        // 최저 기온 레이블 레이아웃
+        myLocationMinimumTemperatureLabel.snp.makeConstraints {
+            $0.top.equalTo(myLocationAverageTemperatureLabel.snp.bottom).offset(23)
+            $0.trailing.equalTo(locationListImageView).inset(16)
+        }
         
-        NSLayoutConstraint.activate([
-            myLocationMinimumTemperatureLabel.topAnchor.constraint(equalTo: myLocationAverageTemperatureLabel.bottomAnchor, constant: 23),
-            myLocationMinimumTemperatureLabel.trailingAnchor.constraint(equalTo: locationListImageView.trailingAnchor, constant: -16),
-            myLocationMinimumTemperatureLabel.bottomAnchor.constraint(equalTo: locationListImageView.bottomAnchor, constant: -10)
-        ])
-        
-        NSLayoutConstraint.activate([
-            myLocationMaximumTemperatureLabel.topAnchor.constraint(equalTo: myLocationAverageTemperatureLabel.bottomAnchor, constant: 23),
-            myLocationMaximumTemperatureLabel.trailingAnchor.constraint(equalTo: myLocationMinimumTemperatureLabel.leadingAnchor, constant: -6),
-            myLocationMaximumTemperatureLabel.bottomAnchor.constraint(equalTo: locationListImageView.bottomAnchor, constant: -10)
-        ])
+        // 최고 기온 레이블 레이아웃
+        myLocationMaximumTemperatureLabel.snp.makeConstraints {
+            $0.top.equalTo(myLocationAverageTemperatureLabel.snp.bottom).offset(23)
+            $0.trailing.equalTo(locationListImageView).inset(79)
+        }
     }
     
     
