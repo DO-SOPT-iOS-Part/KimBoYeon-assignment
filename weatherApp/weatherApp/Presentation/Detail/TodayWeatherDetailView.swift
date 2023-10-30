@@ -6,53 +6,22 @@
 //
 
 import UIKit
-// 네이밍
+
+import SnapKit
+import Then
+
 class listView: UIView {
     
-    // 세부 수직 스택뷰
-    private var weatherDetailverticalStackView: UIStackView = {
-        let weatherDetailverticalStackView = UIStackView()
-        weatherDetailverticalStackView.translatesAutoresizingMaskIntoConstraints = false
-        weatherDetailverticalStackView.axis = .vertical
-        weatherDetailverticalStackView.alignment = .center
-        weatherDetailverticalStackView.distribution = .equalSpacing
-        weatherDetailverticalStackView.spacing = 14
-        
-        return weatherDetailverticalStackView
-    }()
-    
-    let todayTimeLabel: UILabel = {
-        let timeLabel = UILabel()
-        timeLabel.text = ""
-        timeLabel.font = .medium(size: 17)
-        timeLabel.textColor = .white
-        timeLabel.textAlignment = .center
-        return timeLabel
-    }()
-    
-    let todayWeatherImageView: UIImageView = {
-        let weatherImageView = UIImageView()
-        weatherImageView.image = UIImage(named: "")
-        return weatherImageView
-    }()
-    
-    let todayTemperatureLabel: UILabel = {
-        let temperatureLabel = UILabel()
-        temperatureLabel.text = ""
-        temperatureLabel.font = .medium(size: 22)
-        temperatureLabel.textColor = .white
-        temperatureLabel.textAlignment = .center
-        return temperatureLabel
-    }()
-    
+    private var weatherDetailverticalStackView = UIStackView()
+    let todayTimeLabel = UILabel()
+    let todayWeatherImageView = UIImageView()
+    let todayTemperatureLabel = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        weatherDetailverticalStackView.addArrangedSubview(todayTimeLabel, todayWeatherImageView, todayTemperatureLabel)
         
-        addSubview(weatherDetailverticalStackView)
-        
+        setStyle()
         setLayout()
     }
     
@@ -60,7 +29,42 @@ class listView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setStyle() {
+        
+        // 세부 수직 스택뷰
+        weatherDetailverticalStackView.do {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.axis = .vertical
+            $0.alignment = .center
+            $0.distribution = .equalSpacing
+            $0.spacing = 14
+        }
+        
+        todayTimeLabel.do {
+            $0.text = ""
+            $0.font = .medium(size: 17)
+            $0.textColor = .white
+            $0.textAlignment = .center
+        }
+        
+        todayWeatherImageView.do {
+            $0.image = UIImage(named: "")
+        }
+        
+        todayTemperatureLabel.do {
+            $0.text = ""
+            $0.font = .medium(size: 22)
+            $0.textColor = .white
+            $0.textAlignment = .center
+        }
+        
+    }
+    
     func setLayout() {
+        
+        weatherDetailverticalStackView.addArrangedSubview(todayTimeLabel, todayWeatherImageView, todayTemperatureLabel)
+        
+        addSubview(weatherDetailverticalStackView)
         NSLayoutConstraint.activate([
             weatherDetailverticalStackView.topAnchor.constraint(equalTo: self.topAnchor),
             weatherDetailverticalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),

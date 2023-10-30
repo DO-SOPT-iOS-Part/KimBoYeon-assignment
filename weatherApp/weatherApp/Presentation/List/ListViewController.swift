@@ -7,123 +7,24 @@
 
 import UIKit
 
+import SnapKit
+import Then
+
 class ListViewController: UIViewController {
     
-    // 상단 editerIcon 이미지 생성
-    private let editerImageView: UIImageView = {
-        let editerImageView = UIImageView()
-        editerImageView.image = UIImage(named: "editer")
-        editerImageView.translatesAutoresizingMaskIntoConstraints = false
-        return editerImageView
-    }()
+    private let editerImageView = UIImageView()
+    private let titleLabel = UILabel()
+    private let searchBar = UISearchBar()
+    private let locationListImageView = UIImageView()
+    private let scrollView = UIScrollView ()
+    private var contentView = UIView()
+    private let myLocationLabel = UILabel()
+    private let myLocationNameLabel = UILabel()
+    private let myLocationConditionLabel = UILabel()
+    private let myLocationAverageTemperatureLabel = UILabel()
+    private let myLocationMinimumTemperatureLabel = UILabel()
+    private let myLocationMaximumTemperatureLabel = UILabel()
     
-    // "날씨" 타이틀 레이블 생성
-    private let titleLabel: UILabel = {
-        var titleLabel = UILabel()
-        titleLabel.text = "날씨"
-        titleLabel.textColor = .white
-        titleLabel.font = .bold(size: 36)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textAlignment = .center
-        return titleLabel
-    }()
-    
-    // seachBar 생성
-    private let searchBar: UISearchBar = {
-        var searchBar = UISearchBar()
-        searchBar.setImage(UIImage(named: "search"), for: .search, state: .normal)
-        searchBar.placeholder = "도시 또는 공항 검색"
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.searchBarStyle = .minimal
-        searchBar.keyboardType = .default
-        searchBar.searchTextField.clearButtonMode = .whileEditing
-        searchBar.tintColor = UIColor.white
-        searchBar.searchTextField.textColor = UIColor.white
-        return searchBar
-    }()
-    
-    // 리스트 카드뷰 생성
-    private let locationListImageView: UIImageView = {
-        let locationListImageView = UIImageView()
-        locationListImageView.image = UIImage(named: "list-1x")
-        locationListImageView.translatesAutoresizingMaskIntoConstraints = false
-        return locationListImageView
-    }()
-    
-    // 날씨 리스트
-    
-    private let scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.alwaysBounceVertical = true
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-    
-    private var contentView: UIView = {
-        let contentView = UIView()
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        return contentView
-    }()
-    
-    private let myLocationLabel: UILabel = {
-        var myLocationLabel = UILabel()
-        myLocationLabel.text = "나의 위치"
-        myLocationLabel.textColor = .white
-        myLocationLabel.font = .bold(size: 24)
-        myLocationLabel.translatesAutoresizingMaskIntoConstraints = false
-        myLocationLabel.textAlignment = .center
-        return myLocationLabel
-    }()
-    
-    private let myLocationNameLabel: UILabel = {
-        var myLocationNameLabel = UILabel()
-        myLocationNameLabel.text = "고양시"
-        myLocationNameLabel.textColor = .white
-        myLocationNameLabel.font = .medium(size: 17)
-        myLocationNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        myLocationNameLabel.textAlignment = .center
-        return myLocationNameLabel
-    }()
-    
-    private let myLocationConditionLabel: UILabel = {
-        var myLocationConditionLabel = UILabel()
-        myLocationConditionLabel.text = "흐림"
-        myLocationConditionLabel.textColor = .white
-        myLocationConditionLabel.font = .medium(size: 16)
-        myLocationConditionLabel.translatesAutoresizingMaskIntoConstraints = false
-        myLocationConditionLabel.textAlignment = .center
-        return myLocationConditionLabel
-    }()
-    
-    private let myLocationAverageTemperatureLabel: UILabel = {
-        var myLocationAverageTemperatureLabel = UILabel()
-        myLocationAverageTemperatureLabel.text = "21°"
-        myLocationAverageTemperatureLabel.textColor = .white
-        myLocationAverageTemperatureLabel.font = .light(size: 52)
-        myLocationAverageTemperatureLabel.translatesAutoresizingMaskIntoConstraints = false
-        myLocationAverageTemperatureLabel.textAlignment = .center
-        return myLocationAverageTemperatureLabel
-    }()
-    
-    private let myLocationMinimumTemperatureLabel: UILabel = {
-        var myLocationMinimumTemperatureLabel = UILabel()
-        myLocationMinimumTemperatureLabel.text = "최저:15°"
-        myLocationMinimumTemperatureLabel.textColor = .white
-        myLocationMinimumTemperatureLabel.font = .medium(size: 15)
-        myLocationMinimumTemperatureLabel.translatesAutoresizingMaskIntoConstraints = false
-        myLocationMinimumTemperatureLabel.textAlignment = .center
-        return myLocationMinimumTemperatureLabel
-    }()
-    
-    private let myLocationMaximumTemperatureLabel: UILabel = {
-        var myLocationMaximumTemperatureLabel = UILabel()
-        myLocationMaximumTemperatureLabel.text = "최고:29°"
-        myLocationMaximumTemperatureLabel.textColor = .white
-        myLocationMaximumTemperatureLabel.font = .medium(size: 15)
-        myLocationMaximumTemperatureLabel.translatesAutoresizingMaskIntoConstraints = false
-        myLocationMaximumTemperatureLabel.textAlignment = .center
-        return myLocationMaximumTemperatureLabel
-    }()
     
     @objc
     func locationListTapped() {
@@ -146,6 +47,102 @@ private extension ListViewController {
     func setStyle() {
         
         view.backgroundColor = .black
+        
+        // 상단 editerIcon 이미지 생성
+        editerImageView.do {
+            $0.image = UIImage(named: "editer")
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
+        // "날씨" 타이틀 레이블 생성
+        titleLabel.do {
+            $0.text = "날씨"
+            $0.textColor = .white
+            $0.font = .bold(size: 36)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.textAlignment = .center
+        }
+        
+        // seachBar 생성
+        searchBar.do {
+            $0.setImage(UIImage(named: "search"), for: .search, state: .normal)
+            $0.placeholder = "도시 또는 공항 검색"
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.searchBarStyle = .minimal
+            $0.keyboardType = .default
+            $0.searchTextField.clearButtonMode = .whileEditing
+            $0.tintColor = UIColor.white
+            $0.searchTextField.textColor = UIColor.white
+        }
+        
+        // 리스트 카드뷰 생성
+        locationListImageView.do {
+            $0.image = UIImage(named: "list-1x")
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
+        // 날씨 리스트
+        scrollView.do {
+            $0.alwaysBounceVertical = true
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
+        contentView.do {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
+        myLocationLabel.do {
+            $0.text = "나의 위치"
+            $0.textColor = .white
+            $0.font = .bold(size: 24)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.textAlignment = .center
+        }
+        
+        myLocationNameLabel.do {
+            $0.text = "고양시"
+            $0.textColor = .white
+            $0.font = .medium(size: 17)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.textAlignment = .center
+        }
+        
+        myLocationConditionLabel.do {
+            $0.text = "흐림"
+            $0.textColor = .white
+            $0.font = .medium(size: 16)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.textAlignment = .center
+        }
+        
+        myLocationAverageTemperatureLabel.do {
+            $0.text = "21°"
+            $0.textColor = .white
+            $0.font = .light(size: 52)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.textAlignment = .center
+        }
+        
+        myLocationMinimumTemperatureLabel.do {
+            $0.text = "최저:15°"
+            $0.textColor = .white
+            $0.font = .medium(size: 15)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.textAlignment = .center
+        }
+        
+        myLocationMaximumTemperatureLabel.do {
+            $0.text = "최고:29°"
+            $0.textColor = .white
+            $0.font = .medium(size: 15)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.textAlignment = .center
+        }
+        
+    }
+    
+    func setLayout() {
+        
         view.addSubViews(editerImageView, titleLabel, scrollView, locationListImageView)
         scrollView.addSubview(contentView)
         scrollView.contentSize = contentView.frame.size
@@ -153,10 +150,6 @@ private extension ListViewController {
         contentView.addSubview(locationListImageView)
         locationListImageView.addSubViews(myLocationLabel, myLocationNameLabel, myLocationConditionLabel, myLocationAverageTemperatureLabel, myLocationMinimumTemperatureLabel, myLocationMaximumTemperatureLabel)
         
-    }
-    
-    
-    func setLayout() {
         
         NSLayoutConstraint.activate([
             editerImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 52),
