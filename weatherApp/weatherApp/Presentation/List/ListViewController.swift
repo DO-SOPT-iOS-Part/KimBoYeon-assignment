@@ -12,18 +12,18 @@ import Then
 
 class ListViewController: UIViewController {
     
-    private let editerImageView = UIImageView()
-    private let titleLabel = UILabel()
-    private let searchBar = UISearchBar()
-    private let locationListImageView = UIImageView()
-    private let scrollView = UIScrollView ()
-    private var contentView = UIView()
-    private let myLocationLabel = UILabel()
-    private let myLocationNameLabel = UILabel()
-    private let myLocationConditionLabel = UILabel()
-    private let myLocationAverageTemperatureLabel = UILabel()
-    private let myLocationMinimumTemperatureLabel = UILabel()
-    private let myLocationMaximumTemperatureLabel = UILabel()
+    
+    
+    private let listCollectionView: UICollectionView = {
+        
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        let listCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        return listCollectionView
+    }()
+    
+    private let searchController = UISearchController(searchResultsController: nil)
+    
     
     
     @objc
@@ -34,200 +34,66 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(locationListTapped))
-        locationListImageView.isUserInteractionEnabled = true
-        locationListImageView.addGestureRecognizer(tapGesture)
+
+        title = "날씨"
         
-        self.navigationController?.navigationBar.isHidden = true
         
+        let editerButton = UIButton(type: .custom)
+        editerButton.setImage(UIImage(named: "editer"), for: .normal)
+        
+        let customBarButtonItem = UIBarButtonItem(customView: editerButton)
+        navigationItem.rightBarButtonItem = customBarButtonItem
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
+        self.navigationController?.navigationBar.barTintColor = .black
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = false
+        
+        self.navigationController?.navigationBar.isHidden = false
+        
+        setCollectionViewConfig()
         setStyle()
         setLayout()
     }
-}
-
-private extension ListViewController {
-    func setStyle() {
+    
+    private func setStyle() {
         
-        view.backgroundColor = .black
-        
-        // 상단 editerIcon 이미지 생성
-        editerImageView.do {
-            $0.image = UIImage(named: "editer")
-            $0.translatesAutoresizingMaskIntoConstraints = false
+        listCollectionView.do {
+            $0.backgroundColor = .black
         }
         
-        // "날씨" 타이틀 레이블 생성
-        titleLabel.do {
-            $0.text = "날씨"
-            $0.textColor = .white
-            $0.font = .bold(size: 36)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.textAlignment = .center
+        searchController.do {
+            $0.searchBar.placeholder = "도시 또는 공항 검색"
+            $0.searchBar.searchBarStyle = .minimal
+            $0.obscuresBackgroundDuringPresentation = false
+            $0.hidesNavigationBarDuringPresentation = false
         }
         
-        // seachBar 생성
-        searchBar.do {
-            $0.setImage(UIImage(named: "search"), for: .search, state: .normal)
-            $0.placeholder = "도시 또는 공항 검색"
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.searchBarStyle = .minimal
-            $0.keyboardType = .default
-            $0.searchTextField.clearButtonMode = .whileEditing
-            $0.tintColor = UIColor.white
-            $0.searchTextField.textColor = UIColor.white
-        }
         
-        // 리스트 카드뷰 생성
-        locationListImageView.do {
-            $0.image = UIImage(named: "list-1x")
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
+    }
+    
+    private func setLayout() {
         
-        // 날씨 리스트
-        scrollView.do {
-            $0.alwaysBounceVertical = true
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
+        self.view.addSubview(listCollectionView)
         
-        contentView.do {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
         
-        myLocationLabel.do {
-            $0.text = "나의 위치"
-            $0.textColor = .white
-            $0.font = .bold(size: 24)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.textAlignment = .center
-        }
         
-        myLocationNameLabel.do {
-            $0.text = "고양시"
-            $0.textColor = .white
-            $0.font = .medium(size: 17)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.textAlignment = .center
-        }
-        
-        myLocationConditionLabel.do {
-            $0.text = "흐림"
-            $0.textColor = .white
-            $0.font = .medium(size: 16)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.textAlignment = .center
-        }
-        
-        myLocationAverageTemperatureLabel.do {
-            $0.text = "21°"
-            $0.textColor = .white
-            $0.font = .light(size: 52)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.textAlignment = .center
-        }
-        
-        myLocationMinimumTemperatureLabel.do {
-            $0.text = "최저:15°"
-            $0.textColor = .white
-            $0.font = .medium(size: 15)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.textAlignment = .center
-        }
-        
-        myLocationMaximumTemperatureLabel.do {
-            $0.text = "최고:29°"
-            $0.textColor = .white
-            $0.font = .medium(size: 15)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.textAlignment = .center
+        listCollectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
     }
     
-    func setLayout() {
-        
-        view.addSubViews(editerImageView, titleLabel, searchBar, scrollView, locationListImageView)
-        scrollView.addSubview(contentView)
-        scrollView.contentSize = contentView.frame.size
-//        view.addSubview(searchBar)
-        contentView.addSubview(locationListImageView)
-        locationListImageView.addSubViews(myLocationLabel, myLocationNameLabel, myLocationConditionLabel, myLocationAverageTemperatureLabel, myLocationMinimumTemperatureLabel, myLocationMaximumTemperatureLabel)
-        
-        
-        // 상단 에디터 아이콘 레이아웃
-        editerImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(52)
-            $0.trailing.equalToSuperview().offset(-10)
-        }
-        
-        // "날씨" 타이틀 레이아웃
-        titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(97)
-            $0.leading.equalToSuperview().offset(20)
-        }
-        
-        // 서치바 레이아웃
-        searchBar.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(15)
-            $0.leading.trailing.equalToSuperview().inset(12)
-        }
-        
-        // 수직스크롤뷰 레이아웃
-        scrollView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(204)
-            $0.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        // 수직스크롤뷰의 컨텐츠뷰 레이아웃
-        contentView.snp.makeConstraints {
-            $0.edges.equalTo(scrollView)
-        }
-        
-        contentView.snp.makeConstraints {
-            $0.width.equalTo(scrollView.snp.width)
-            $0.height.greaterThanOrEqualTo(view.snp.height).priority(.low)
-        }
-        
-        // 리스트카드뷰 레이아웃
-        locationListImageView.snp.makeConstraints {
-            $0.top.equalTo(scrollView).offset(15)
-            $0.leading.trailing.equalToSuperview().inset(20)
-        }
-        
-        // "나의 위치" 레이블 레이아웃
-        myLocationLabel.snp.makeConstraints {
-            $0.top.equalTo(locationListImageView).offset(10)
-            $0.leading.equalTo(locationListImageView).offset(16)
-        }
-        
-        // "고양시" 레이블 레이아웃
-        myLocationNameLabel.snp.makeConstraints {
-            $0.top.equalTo(myLocationLabel.snp.bottom).offset(2)
-            $0.leading.equalTo(locationListImageView).offset(16)
-        }
-        
-        // 날씨 상태 레이블 레이아웃
-        myLocationConditionLabel.snp.makeConstraints {
-            $0.bottom.equalTo(locationListImageView).inset(10)
-            $0.leading.equalTo(locationListImageView).offset(16)
-        }
-        
-        // 평균 기온 레이블 레이아웃
-        myLocationAverageTemperatureLabel.snp.makeConstraints {
-            $0.top.equalTo(locationListImageView).offset(4)
-            $0.trailing.equalTo(locationListImageView).inset(16)
-        }
-
-        // 최저 기온 레이블 레이아웃
-        myLocationMinimumTemperatureLabel.snp.makeConstraints {
-            $0.top.equalTo(myLocationAverageTemperatureLabel.snp.bottom).offset(23)
-            $0.trailing.equalTo(locationListImageView).inset(16)
-        }
-        
-        // 최고 기온 레이블 레이아웃
-        myLocationMaximumTemperatureLabel.snp.makeConstraints {
-            $0.top.equalTo(myLocationAverageTemperatureLabel.snp.bottom).offset(23)
-            $0.trailing.equalTo(locationListImageView).inset(79)
-        }
+    private func setCollectionViewConfig() {
+        self.listCollectionView.register(weatherListCollectionCell.self,
+                                         forCellWithReuseIdentifier: weatherListCollectionCell.identifier)
+        self.listCollectionView.delegate = self
+        self.listCollectionView.dataSource = self
     }
     
     
@@ -237,4 +103,35 @@ private extension ListViewController {
         self.navigationController?.pushViewController(DetailViewController, animated: true)
     }
     
+}
+
+extension ListViewController: UICollectionViewDelegate {}
+extension ListViewController: UICollectionViewDataSource {
+    
+    func collectionView(_ listCollectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return weatherCardItemData.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedWeatherItem = weatherCardItemData[indexPath.row]
+        let detailViewController = DetailViewController()
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    func collectionView(_ listCollectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let item = listCollectionView.dequeueReusableCell(withReuseIdentifier: weatherListCollectionCell.identifier,
+                                                                for: indexPath) as? weatherListCollectionCell else {return UICollectionViewCell()}
+        item.bindData(data: weatherCardItemData[indexPath.row])
+        return item
+    }
+}
+
+extension ListViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width - 40, height: 117)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return CGFloat(16)
+    }
 }
