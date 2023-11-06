@@ -95,8 +95,6 @@ class weatherListCollectionCell: UICollectionViewCell {
         
         myLocationImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-//            $0.top.equalToSuperview().inset(15)
-//            $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         
