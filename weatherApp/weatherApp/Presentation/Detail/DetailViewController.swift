@@ -14,14 +14,20 @@ import SnapKit
 class DetailViewController: UIViewController {
     
     private let backgroundView = UIImageView()
-    
     private let detailCollectionView: UICollectionView = {
-        
         let mainFlowLayout = UICollectionViewFlowLayout()
         mainFlowLayout.scrollDirection = .vertical
         let detailCollectionView = UICollectionView(frame: .zero, collectionViewLayout: mainFlowLayout)
         return detailCollectionView
     }()
+    private var tabBar = UIView()
+    private let mapImage = UIImageView()
+    private var locationIconStackView = UIStackView()
+    private let nowMyLocationImage = UIImageView()
+    private let otherLocationImage = UIImageView()
+    private let locationListImageButton = UIButton()
+    
+    
     
     
     
@@ -29,12 +35,21 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.isHidden = true
+        locationListImageButton.addTarget(self, action: #selector(locationListButtonTapped), for: .touchUpInside)
         
         self.setDetailCollectionViewConfig()
         self.setStyle()
         self.setLayout()
         
-        
+    }
+    
+    @objc
+    func locationListButtonTapped() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        tabBar.layer.addBorder([.top], color: UIColor.white.withAlphaComponent(0.3), width: 0.4)
     }
     
 }
@@ -53,14 +68,73 @@ private extension DetailViewController {
             $0.backgroundColor = .clear
         }
         
+        // 하단 탭 바
+        tabBar.do {
+            $0.backgroundColor = UIColor(hexCode: "2A3040")
+        }
+        
+        mapImage.do {
+            $0.image = UIImage(named: "map")
+        }
+        
+        locationIconStackView.do {
+            $0.axis = .horizontal
+            $0.alignment = .fill
+            $0.distribution = .equalSpacing
+            $0.spacing = 4
+        }
+        
+        nowMyLocationImage.do {
+            $0.image = UIImage(named: "my-location")
+        }
+        
+        otherLocationImage.do {
+            $0.image = UIImage(named: "dot")
+        }
+        
+        locationListImageButton.do {
+            $0.setImage(UIImage(named: "location-list"), for: .normal)
+            $0.isUserInteractionEnabled = true
+        }
     }
+    
     func setLayout() {
         
-        view.addSubViews(backgroundView, detailCollectionView)
+        view.addSubViews(backgroundView, detailCollectionView, tabBar)
+        self.tabBar.addSubViews(mapImage, locationIconStackView, locationListImageButton)
+        self.locationIconStackView.addArrangedSubview(nowMyLocationImage, otherLocationImage)
         
         detailCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        // 하단 탭바 레이아웃
+        tabBar.snp.makeConstraints {
+            $0.height.equalTo(82)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        // 하단 탭 바 지도 아이콘 레이아웃
+        mapImage.snp.makeConstraints {
+            $0.top.equalTo(tabBar.snp.top).inset(4)
+            $0.leading.equalTo(tabBar.snp.leading).inset(10)
+        }
+        
+        // 하단 탭 바 위치 관련 아이콘 스택뷰 레이아웃
+        locationIconStackView.snp.makeConstraints {
+            $0.top.equalTo(tabBar).inset(14)
+            $0.centerX.equalTo(tabBar)
+            $0.width.equalTo(52)
+        }
+        
+        // 하단 탭 바 위치 리스트 아이콘 레이아웃
+        locationListImageButton.snp.makeConstraints {
+            $0.top.equalTo(tabBar).inset(4)
+            $0.trailing.equalTo(tabBar).inset(9)
+        }
+        
+        
+        
     }
     
     private func setDetailCollectionViewConfig() {
