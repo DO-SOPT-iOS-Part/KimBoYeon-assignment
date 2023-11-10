@@ -157,7 +157,7 @@ extension DetailViewController: UICollectionViewDelegateFlowLayout {
         case 0:
             return UIEdgeInsets(top: 34, left: 0, bottom: 44, right: 0)
         case 1:
-            return UIEdgeInsets(top: 0, left: 8, bottom: 16, right: 0)
+            return UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
         case 2:
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         default:
