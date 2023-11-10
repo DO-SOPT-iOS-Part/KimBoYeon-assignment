@@ -13,7 +13,7 @@ import Then
 class dayWeatherCollectionViewCell: UICollectionViewCell {
     
     private let todayTimeLabel = UILabel()
-    private let todayWeatherImageView = UIImageView()
+    let todayWeatherImageView = UIImageView()
     let config = UIImage.SymbolConfiguration(font: .medium(size: 26))
     private let todayTemperatureLabel = UILabel()
     
@@ -34,7 +34,7 @@ class dayWeatherCollectionViewCell: UICollectionViewCell {
     
     func bindData(data: DayWeatherItemData) {
         self.todayTimeLabel.text = data.todayTimeLabel
-        self.todayWeatherImageView.image = UIImage(systemName: data.todayWeatherImageView)
+        self.todayWeatherImageView.image = UIImage(systemName: data.todayWeatherImageView)?.withRenderingMode(.alwaysOriginal)
         self.todayTemperatureLabel.text = data.todayTemperatureLabel
     }
     
@@ -44,7 +44,7 @@ class dayWeatherCollectionViewCell: UICollectionViewCell {
             $0.backgroundColor = .clear
         }
         
-
+        
         todayTimeLabel.do {
             $0.textColor = .white
             $0.font = .medium(size: 17)
@@ -64,7 +64,7 @@ class dayWeatherCollectionViewCell: UICollectionViewCell {
     func setLayout() {
         
         contentView.addSubViews(todayTimeLabel, todayWeatherImageView, todayTemperatureLabel)
-    
+        
         
         todayTimeLabel.snp.makeConstraints {
             $0.top.equalToSuperview()

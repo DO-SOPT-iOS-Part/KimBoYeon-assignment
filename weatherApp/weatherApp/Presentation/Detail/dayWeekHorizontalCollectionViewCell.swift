@@ -60,7 +60,7 @@ class dayWeekHorizontalCollectionViewCell: UICollectionViewCell {
             $0.top.equalToSuperview()
             $0.height.equalTo(1)
             $0.leading.equalToSuperview().inset(34)
-            $0.trailing.equalToSuperview().offset(-16)
+            $0.trailing.equalTo(horizontalCollectionView.snp.trailing)
         }
     }
     

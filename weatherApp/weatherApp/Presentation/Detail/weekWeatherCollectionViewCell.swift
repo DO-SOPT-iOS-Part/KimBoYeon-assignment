@@ -14,7 +14,7 @@ class weekWeatherCollectionViewCell: UICollectionViewCell {
     
     private let dayOfTheWeekLabel = UILabel()
     private let weatherItemStackView = UIStackView()
-    private let weatherIconImageView = UIImageView()
+    let weatherIconImageView = UIImageView(image: UIImage(systemName: "sun.max.fill")?.withRenderingMode(.alwaysOriginal))
     let config = UIImage.SymbolConfiguration(font: .medium(size: 22))
     private let rainingPercentLabel = UILabel()
     private let dayOfMinimumTemperatureLabel = UILabel()
@@ -39,7 +39,7 @@ class weekWeatherCollectionViewCell: UICollectionViewCell {
     
     func bindData(data: WeekWeatherItemData) {
         self.dayOfTheWeekLabel.text = data.dayOfTheWeekLabel
-        self.weatherIconImageView.image = UIImage(systemName: data.weatherIconImageView)
+        self.weatherIconImageView.image = UIImage(systemName: data.weatherIconImageView)?.withRenderingMode(.alwaysOriginal)
         self.rainingPercentLabel.text = data.rainingPercentLabel
         self.dayOfMinimumTemperatureLabel.text = data.dayOfMinimumTemperatureLabel
         self.graphImageView.image = UIImage(named: data.graphImageView)
