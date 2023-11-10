@@ -1,5 +1,5 @@
 //
-//  weekWeatherTableViewCell.swift
+//  weekWeatherCollectionViewCell.swift
 //  weatherApp
 //
 //  Created by 김보연 on 10/31/23.
@@ -105,7 +105,7 @@ class weekWeatherCollectionViewCell: UICollectionViewCell {
         
         dayOfTheWeekLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(14)
-            $0.leading.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview().inset(20)
         }
         
         weatherItemStackView.snp.makeConstraints {
@@ -130,7 +130,7 @@ class weekWeatherCollectionViewCell: UICollectionViewCell {
         dayOfMaximumTemperatureLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(14)
             $0.width.equalTo(40)
-            $0.trailing.equalToSuperview().offset(-16)
+            $0.trailing.equalToSuperview().offset(-20)
         }
         
         cellDividerView.snp.makeConstraints {
