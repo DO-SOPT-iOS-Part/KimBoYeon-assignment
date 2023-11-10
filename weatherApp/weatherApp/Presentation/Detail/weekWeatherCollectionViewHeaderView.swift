@@ -1,5 +1,5 @@
 //
-//  weekWeatherTableViewHeaderView.swift
+//  weekWeatherCollectionViewHeaderView.swift
 //  weatherApp
 //
 //  Created by 김보연 on 11/7/23.
