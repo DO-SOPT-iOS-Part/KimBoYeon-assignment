@@ -60,6 +60,11 @@ class ListViewController: UIViewController {
         setStyle()
         setLayout()
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.isHidden = false
+    }
     
     private func setStyle() {
         
