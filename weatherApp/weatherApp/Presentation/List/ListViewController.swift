@@ -21,6 +21,7 @@ class ListViewController: UIViewController {
     }()
     
     private let searchController = UISearchController(searchResultsController: nil)
+    private var filteredWeatherList: [WeatherCardItemData] = []
     
     
     @objc
@@ -42,6 +43,7 @@ class ListViewController: UIViewController {
         let customBarButtonItem = UIBarButtonItem(customView: editerButton)
         navigationItem.rightBarButtonItem = customBarButtonItem
         
+        
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationItem.largeTitleDisplayMode = .always
         self.navigationController?.navigationBar.barTintColor = .black
@@ -49,6 +51,7 @@ class ListViewController: UIViewController {
         self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
         navigationItem.searchController = searchController
+        searchController.searchResultsUpdater = self
         navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = false
         
@@ -79,6 +82,7 @@ class ListViewController: UIViewController {
             $0.searchBar.searchBarStyle = .minimal
             $0.obscuresBackgroundDuringPresentation = false
             $0.hidesNavigationBarDuringPresentation = false
+            $0.searchBar.searchTextField.textColor = .white
         }
         
         
@@ -94,7 +98,7 @@ class ListViewController: UIViewController {
     }
     
     private func setWeatherInfo() async {
-        let locationData = ["gongju", "gwangju", "gumi", "gunsan", "daegu", "daejeon", "mokpo", "busan", "seosan", "seoul"]
+        let locationData = ["gongju", "suwon", "gumi", "iksan", "daegu", "cheongju", "mokpo", "busan", "seosan", "seoul"]
         for i in locationData {
             do {
                 let status = try await GetInfoService.shared.PostRegisterData(name: i)
@@ -146,11 +150,10 @@ extension ListViewController: UICollectionViewDelegate {}
 extension ListViewController: UICollectionViewDataSource {
     
     func collectionView(_ listCollectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return weatherList.count
+        return isSearchActive ? filteredWeatherList.count : weatherList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //let selectedWeatherItem = weatherList[indexPath.row]
         let detailViewController = DetailViewController()
         navigationController?.pushViewController(detailViewController, animated: true)
     }
@@ -160,6 +163,15 @@ extension ListViewController: UICollectionViewDataSource {
                                                                 for: indexPath) as? weatherListCollectionCell else {return UICollectionViewCell()}
         item.bindData(data: weatherList[indexPath.row])
         return item
+    }
+    
+    
+    private var isSearchActive: Bool {
+        return searchController.isActive && !isSearchBarEmpty
+    }
+    
+    private var isSearchBarEmpty: Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
     }
 }
 
@@ -171,5 +183,21 @@ extension ListViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return CGFloat(16)
+    }
+}
+
+extension ListViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text?.lowercased(), !text.isEmpty else {
+            filteredWeatherList = weatherList
+            listCollectionView.reloadData()
+            return
+        }
+        
+        filteredWeatherList = weatherList.filter {
+            $0.myLocationLabel.lowercased().contains(text)
+        }
+        
+        listCollectionView.reloadData()
     }
 }
