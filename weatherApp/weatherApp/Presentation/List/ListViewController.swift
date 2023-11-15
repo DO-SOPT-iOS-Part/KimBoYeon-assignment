@@ -12,8 +12,6 @@ import Then
 
 class ListViewController: UIViewController {
     
-    
-    
     private let listCollectionView: UICollectionView = {
         
         let flowLayout = UICollectionViewFlowLayout()
@@ -25,16 +23,16 @@ class ListViewController: UIViewController {
     private let searchController = UISearchController(searchResultsController: nil)
     
     
-    
     @objc
     func locationListTapped() {
         pushToViewController()
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        
         title = "날씨"
         
         
@@ -59,8 +57,12 @@ class ListViewController: UIViewController {
         setCollectionViewConfig()
         setStyle()
         setLayout()
+        
+        Task {
+            await setWeatherInfo()
+        }
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
@@ -81,12 +83,41 @@ class ListViewController: UIViewController {
         
         
     }
+    func convertTime(timezone: Int) -> String {
+        let timeZone = TimeZone(secondsFromGMT: timezone)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.timeZone = timeZone
+        let currentDate = Date()
+        let formattedTime = dateFormatter.string(from: currentDate)
+        return formattedTime
+    }
+    
+    private func setWeatherInfo() async {
+        let locationData = ["gongju", "gwangju", "gumi", "gunsan", "daegu", "daejeon", "mokpo", "busan", "seosan", "seoul"]
+        for i in locationData {
+            do {
+                let status = try await GetInfoService.shared.PostRegisterData(name: i)
+                
+                let getInfo: WeatherCardItemData = WeatherCardItemData(myLocationLabel: status.name,
+                                                                       myLocationNameLabel:
+                                                                        convertTime(timezone: status.timezone),
+                                                                       myLocationConditionLabel: status.weather[0].main,
+                                                                       myLocationAverageTemperatureLabel: Int(status.main.temp),
+                                                                       myLocationMinimumTemperatureLabel: Int(status.main.tempMin),
+                                                                       myLocationMaximumTemperatureLabel: Int(status.main.tempMax))
+                weatherList.append(getInfo)
+            } catch {
+                print(error)
+            }
+        }
+        self.listCollectionView.reloadData()
+    }
+    
+    
     
     private func setLayout() {
-        
         self.view.addSubview(listCollectionView)
-        
-        
         
         listCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -101,7 +132,7 @@ class ListViewController: UIViewController {
         self.listCollectionView.dataSource = self
     }
     
-    
+    // 화면 전환
     @objc
     func pushToViewController() {
         let DetailViewController = DetailViewController()
@@ -110,15 +141,16 @@ class ListViewController: UIViewController {
     
 }
 
+// 데이터 전달
 extension ListViewController: UICollectionViewDelegate {}
 extension ListViewController: UICollectionViewDataSource {
     
     func collectionView(_ listCollectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return weatherCardItemData.count
+        return weatherList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedWeatherItem = weatherCardItemData[indexPath.row]
+        //let selectedWeatherItem = weatherList[indexPath.row]
         let detailViewController = DetailViewController()
         navigationController?.pushViewController(detailViewController, animated: true)
     }
@@ -126,11 +158,12 @@ extension ListViewController: UICollectionViewDataSource {
     func collectionView(_ listCollectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let item = listCollectionView.dequeueReusableCell(withReuseIdentifier: weatherListCollectionCell.identifier,
                                                                 for: indexPath) as? weatherListCollectionCell else {return UICollectionViewCell()}
-        item.bindData(data: weatherCardItemData[indexPath.row])
+        item.bindData(data: weatherList[indexPath.row])
         return item
     }
 }
 
+// 전체 컬렉션뷰 레이아웃
 extension ListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width - 40, height: 117)
