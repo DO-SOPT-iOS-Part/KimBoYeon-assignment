@@ -12,14 +12,8 @@ import Then
 
 class ListViewController: UIViewController {
     
-    private let listCollectionView: UICollectionView = {
-        
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        let listCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        return listCollectionView
-    }()
-    
+    private let listCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
+
     private let searchController = UISearchController(searchResultsController: nil)
     private var filteredWeatherList: [WeatherCardItemData] = []
     
@@ -72,9 +66,11 @@ class ListViewController: UIViewController {
     }
     
     private func setStyle() {
-        
         listCollectionView.do {
             $0.backgroundColor = .black
+            let flowLayout = UICollectionViewFlowLayout()
+            flowLayout.scrollDirection = .vertical
+            $0.collectionViewLayout = flowLayout
         }
         
         searchController.do {
@@ -84,9 +80,8 @@ class ListViewController: UIViewController {
             $0.hidesNavigationBarDuringPresentation = false
             $0.searchBar.searchTextField.textColor = .white
         }
-        
-        
     }
+    
     func convertTime(timezone: Int) -> String {
         let timeZone = TimeZone(secondsFromGMT: timezone)
         let dateFormatter = DateFormatter()
@@ -102,7 +97,6 @@ class ListViewController: UIViewController {
         for i in locationData {
             do {
                 let status = try await GetInfoService.shared.PostRegisterData(name: i)
-                
                 let getInfo: WeatherCardItemData = WeatherCardItemData(myLocationLabel: status.name,
                                                                        myLocationNameLabel:
                                                                         convertTime(timezone: status.timezone),
@@ -118,15 +112,12 @@ class ListViewController: UIViewController {
         self.listCollectionView.reloadData()
     }
     
-    
-    
     private func setLayout() {
         self.view.addSubview(listCollectionView)
         
         listCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        
     }
     
     private func setCollectionViewConfig() {
@@ -136,16 +127,12 @@ class ListViewController: UIViewController {
         self.listCollectionView.dataSource = self
     }
     
-    // 화면 전환
-    @objc
-    func pushToViewController() {
+    @objc func pushToViewController() {
         let DetailViewController = DetailViewController()
         self.navigationController?.pushViewController(DetailViewController, animated: true)
     }
-    
 }
 
-// 데이터 전달
 extension ListViewController: UICollectionViewDelegate {}
 extension ListViewController: UICollectionViewDataSource {
     
@@ -164,8 +151,7 @@ extension ListViewController: UICollectionViewDataSource {
         item.bindData(data: weatherList[indexPath.row])
         return item
     }
-    
-    
+
     private var isSearchActive: Bool {
         return searchController.isActive && !isSearchBarEmpty
     }
@@ -175,7 +161,6 @@ extension ListViewController: UICollectionViewDataSource {
     }
 }
 
-// 전체 컬렉션뷰 레이아웃
 extension ListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width - 40, height: 117)

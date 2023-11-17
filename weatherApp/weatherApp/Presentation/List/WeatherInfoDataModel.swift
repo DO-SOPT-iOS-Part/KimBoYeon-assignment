@@ -7,7 +7,6 @@
 
 import Foundation
 
-// MARK: - Welcome
 struct WeatherInfoDataModel: Codable {
     let weather: [Weather]
     let main: Main
@@ -17,12 +16,11 @@ struct WeatherInfoDataModel: Codable {
     enum CodingKeys: String, CodingKey {
         case weather
         case main
-        case name = "name"
+        case name
         case timezone
     }
 }
 
-// MARK: - Main
 struct Main: Codable {
     let temp, tempMin, tempMax: Double
 
@@ -34,7 +32,6 @@ struct Main: Codable {
     
 }
 
-// MARK: - Weather
 struct Weather: Codable {
     let main: String
     
