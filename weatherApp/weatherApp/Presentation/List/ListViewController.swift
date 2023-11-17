@@ -12,10 +12,12 @@ import Then
 
 class ListViewController: UIViewController {
     
+
     private let listCollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
 
     private let searchController = UISearchController(searchResultsController: nil)
     private var filteredWeatherList: [WeatherCardItemData] = []
+
     
     
     @objc
@@ -27,6 +29,7 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
         
         title = "날씨"
         
@@ -118,6 +121,7 @@ class ListViewController: UIViewController {
         listCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+
     }
     
     private func setCollectionViewConfig() {
@@ -184,5 +188,36 @@ extension ListViewController: UISearchResultsUpdating {
         }
         
         listCollectionView.reloadData()
+    }
+}
+
+extension ListViewController: UICollectionViewDelegate {}
+extension ListViewController: UICollectionViewDataSource {
+    
+    func collectionView(_ listCollectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return weatherCardItemData.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedWeatherItem = weatherCardItemData[indexPath.row]
+        let detailViewController = DetailViewController()
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    func collectionView(_ listCollectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let item = listCollectionView.dequeueReusableCell(withReuseIdentifier: weatherListCollectionCell.identifier,
+                                                                for: indexPath) as? weatherListCollectionCell else {return UICollectionViewCell()}
+        item.bindData(data: weatherCardItemData[indexPath.row])
+        return item
+    }
+}
+
+extension ListViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width - 40, height: 117)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return CGFloat(16)
     }
 }

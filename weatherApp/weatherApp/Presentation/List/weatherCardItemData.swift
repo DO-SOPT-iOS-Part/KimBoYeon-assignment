@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 var weatherList : [WeatherCardItemData] = []
 
 struct WeatherCardItemData {
@@ -18,6 +19,7 @@ struct WeatherCardItemData {
     let myLocationMaximumTemperatureLabel: Int
     
     init(myLocationLabel: String, myLocationNameLabel: String, myLocationConditionLabel: String, myLocationAverageTemperatureLabel: Int, myLocationMinimumTemperatureLabel: Int, myLocationMaximumTemperatureLabel: Int) {
+
         self.myLocationLabel = myLocationLabel
         self.myLocationNameLabel = myLocationNameLabel
         self.myLocationConditionLabel = myLocationConditionLabel
@@ -26,4 +28,3 @@ struct WeatherCardItemData {
         self.myLocationMaximumTemperatureLabel = myLocationMaximumTemperatureLabel
     }
 }
-
