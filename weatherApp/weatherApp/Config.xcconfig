@@ -1,0 +1,12 @@
+//
+//  Config.xcconfig
+//  weatherApp
+//
+//  Created by 김보연 on 11/14/23.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+BASE_URL = api.openweathermap.org
+API_KEY = d6aa51fff42414fe528f019bee9a2475

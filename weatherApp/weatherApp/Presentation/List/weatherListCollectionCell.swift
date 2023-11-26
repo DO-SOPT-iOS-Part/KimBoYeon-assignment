@@ -36,9 +36,10 @@ class weatherListCollectionCell: UICollectionViewCell {
         self.myLocationLabel.text = data.myLocationLabel
         self.myLocationNameLabel.text = data.myLocationNameLabel
         self.myLocationConditionLabel.text = data.myLocationConditionLabel
-        self.myLocationAverageTemperatureLabel.text = data.myLocationAverageTemperatureLabel
-        self.myLocationMinimumTemperatureLabel.text = data.myLocationMinimumTemperatureLabel
-        self.myLocationMaximumTemperatureLabel.text = data.myLocationMaximumTemperatureLabel
+        self.myLocationAverageTemperatureLabel.text = String(data.myLocationAverageTemperatureLabel) + "°"
+        self.myLocationMinimumTemperatureLabel.text = "최저: " + String(data.myLocationMinimumTemperatureLabel) + "°"
+        self.myLocationMaximumTemperatureLabel.text = "최고: " + String(data.myLocationMaximumTemperatureLabel) + "°"
+
     }
     
     func setStyle() {
