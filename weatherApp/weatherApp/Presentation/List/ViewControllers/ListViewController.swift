@@ -32,8 +32,7 @@ class ListViewController: BaseViewController {
     }
     
     override func setRegister() {
-        listView.listCollectionView.register(ListCardCollectionViewCell.self,
-                                             forCellWithReuseIdentifier: ListCardCollectionViewCell.identifier)
+        ListCardCollectionViewCell.register(to: listView.listCollectionView)
     }
     
     override func viewWillAppear(_ animated: Bool) {

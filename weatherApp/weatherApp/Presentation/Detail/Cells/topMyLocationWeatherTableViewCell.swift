@@ -61,7 +61,7 @@ class topMyLocationWeatherCollectionViewCell: UICollectionViewCell {
     
     func setLayout() {
         
-        self.contentView.addSubViews(topLocationNameLabel, topNowTemperatureLabel, topWeatherLabel, topMinMaxTemperatureLabel)
+        self.contentView.addSubviews(topLocationNameLabel, topNowTemperatureLabel, topWeatherLabel, topMinMaxTemperatureLabel)
         
         topLocationNameLabel.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()

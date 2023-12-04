@@ -10,7 +10,7 @@ import UIKit
 import Then
 import SnapKit
 
-class ListCardCollectionViewCell: UICollectionViewCell {
+class ListCardCollectionViewCell: UICollectionViewCell, CollectionViewCellRegisterDequeueProtocol {
     
     static let identifier: String = "ListCardCollectionViewCell"
 

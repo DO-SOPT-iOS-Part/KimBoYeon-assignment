@@ -94,8 +94,8 @@ class weekWeatherCollectionViewCell: UICollectionViewCell {
     
     func setLayout() {
         
-        self.contentView.addSubViews(dayOfTheWeekLabel, weatherItemStackView, dayOfMinimumTemperatureLabel, graphImageView, dayOfMaximumTemperatureLabel, cellDividerView)
-        self.weatherItemStackView.addArrangedSubview(weatherIconImageView, rainingPercentLabel)
+        self.contentView.addSubviews(dayOfTheWeekLabel, weatherItemStackView, dayOfMinimumTemperatureLabel, graphImageView, dayOfMaximumTemperatureLabel, cellDividerView)
+        self.weatherItemStackView.addArrangedSubviews(weatherIconImageView, rainingPercentLabel)
         
         contentView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
