@@ -46,7 +46,7 @@ class dayWeekHorizontalCollectionViewCell: UICollectionViewCell {
     
     func setLayout() {
         
-        self.contentView.addSubViews(horizontalCollectionView, secondCellDividerView)
+        self.contentView.addSubviews(horizontalCollectionView, secondCellDividerView)
         
         
         horizontalCollectionView.dataSource = self

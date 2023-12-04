@@ -109,8 +109,8 @@ private extension DetailViewController {
     
     func setLayout() {
         
-        view.addSubViews(backgroundView, detailCollectionView, tabBar)
-        self.tabBar.addSubViews(mapImage, locationIconStackView, locationListImageButton)
+        view.addSubviews(backgroundView, detailCollectionView, tabBar)
+        self.tabBar.addSubviews(mapImage, locationIconStackView, locationListImageButton)
         self.locationIconStackView.addArrangedSubview(nowMyLocationImage, otherLocationImage)
         
         detailCollectionView.snp.makeConstraints {

@@ -63,7 +63,7 @@ class dayWeatherCollectionViewCell: UICollectionViewCell {
     
     func setLayout() {
         
-        contentView.addSubViews(todayTimeLabel, todayWeatherImageView, todayTemperatureLabel)
+        contentView.addSubviews(todayTimeLabel, todayWeatherImageView, todayTemperatureLabel)
         
         
         todayTimeLabel.snp.makeConstraints {

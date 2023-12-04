@@ -44,7 +44,7 @@ class dayWeatherCollectionViewHeaderView: UICollectionReusableView {
     
     func configureLayout() {
         
-        addSubViews(secondHeaderContainerView)
+        addSubviews(secondHeaderContainerView)
         secondHeaderContainerView.addSubview(detailTextLabel)
        
         secondHeaderContainerView.snp.makeConstraints {

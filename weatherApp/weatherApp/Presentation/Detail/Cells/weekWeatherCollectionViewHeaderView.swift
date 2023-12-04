@@ -55,7 +55,7 @@ final class weekWeatherCollectionViewHeaderView: UICollectionReusableView {
     
     func configureLayout() {
         
-        addSubViews(headerContainerView, headerStackView)
+        addSubviews(headerContainerView, headerStackView)
         
         headerStackView.addArrangedSubview(calendarIconImageInHeader, weatherOfTenDaysLabel)
         
