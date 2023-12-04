@@ -57,7 +57,7 @@ final class weekWeatherCollectionViewHeaderView: UICollectionReusableView {
         
         addSubviews(headerContainerView, headerStackView)
         
-        headerStackView.addArrangedSubview(calendarIconImageInHeader, weatherOfTenDaysLabel)
+        headerStackView.addArrangedSubviews(calendarIconImageInHeader, weatherOfTenDaysLabel)
         
         headerContainerView.snp.makeConstraints {
             $0.height.equalTo(38)

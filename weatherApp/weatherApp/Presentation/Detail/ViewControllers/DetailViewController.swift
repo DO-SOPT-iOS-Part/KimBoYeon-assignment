@@ -111,7 +111,7 @@ private extension DetailViewController {
         
         view.addSubviews(backgroundView, detailCollectionView, tabBar)
         self.tabBar.addSubviews(mapImage, locationIconStackView, locationListImageButton)
-        self.locationIconStackView.addArrangedSubview(nowMyLocationImage, otherLocationImage)
+        self.locationIconStackView.addArrangedSubviews(nowMyLocationImage, otherLocationImage)
         
         detailCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
