@@ -1,5 +1,5 @@
 //
-//  weatherListCollectionCell.swift
+//  ListCardCollectionViewCell.swift
 //  weatherApp
 //
 //  Created by 김보연 on 11/2/23.
@@ -10,7 +10,9 @@ import UIKit
 import Then
 import SnapKit
 
-class weatherListCollectionCell: UICollectionViewCell {
+class ListCardCollectionViewCell: UICollectionViewCell {
+    
+    static let identifier: String = "ListCardCollectionViewCell"
 
     private let myLocationImageView = UIImageView()
     private let myLocationLabel = UILabel()
@@ -20,11 +22,9 @@ class weatherListCollectionCell: UICollectionViewCell {
     private let myLocationMinimumTemperatureLabel = UILabel()
     private let myLocationMaximumTemperatureLabel = UILabel()
     
-    static let identifier: String = "weekWeatherTableViewCell"
-    
     override init(frame: CGRect) {
             super.init(frame: frame)
-        self.setStyle()
+        self.setUI()
         self.setLayout()
         }
     
@@ -32,20 +32,9 @@ class weatherListCollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func bindData(data: WeatherCardItemData) {
-        self.myLocationLabel.text = data.myLocationLabel
-        self.myLocationNameLabel.text = data.myLocationNameLabel
-        self.myLocationConditionLabel.text = data.myLocationConditionLabel
-        self.myLocationAverageTemperatureLabel.text = String(data.myLocationAverageTemperatureLabel) + "°"
-        self.myLocationMinimumTemperatureLabel.text = "최저: " + String(data.myLocationMinimumTemperatureLabel) + "°"
-        self.myLocationMaximumTemperatureLabel.text = "최고: " + String(data.myLocationMaximumTemperatureLabel) + "°"
-
-    }
-    
-    func setStyle() {
-        
+    func setUI() {
         myLocationImageView.do {
-            $0.image = UIImage(named: "list-1x")
+            $0.image = ImageLiterals.Home.background.listCard
         }
         
         myLocationLabel.do {
@@ -88,25 +77,21 @@ class weatherListCollectionCell: UICollectionViewCell {
     }
     
     func setLayout() {
-        
-        self.contentView.addSubview(myLocationImageView)
-        
-        self.myLocationImageView.addSubViews(myLocationLabel, myLocationNameLabel, myLocationConditionLabel, myLocationAverageTemperatureLabel, myLocationMaximumTemperatureLabel, myLocationMinimumTemperatureLabel)
+        self.addSubview(myLocationImageView)
+        myLocationImageView.addSubviews(myLocationLabel, myLocationNameLabel, myLocationConditionLabel, myLocationAverageTemperatureLabel, myLocationMaximumTemperatureLabel, myLocationMinimumTemperatureLabel)
         
         
         myLocationImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
-        
         myLocationLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(10)
             $0.leading.equalToSuperview().inset(16)
         }
         
-        
         myLocationNameLabel.snp.makeConstraints {
-            $0.top.equalTo(myLocationLabel.snp.bottom).inset(-2)
+            $0.top.equalTo(myLocationLabel.snp.bottom).offset(2)
             $0.leading.equalToSuperview().inset(16)
         }
         
@@ -122,13 +107,22 @@ class weatherListCollectionCell: UICollectionViewCell {
         
         myLocationMaximumTemperatureLabel.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(10)
-            $0.trailing.equalTo(myLocationMinimumTemperatureLabel.snp.leading).inset(-6)
+            $0.trailing.equalTo(myLocationMinimumTemperatureLabel.snp.leading).offset(6)
         }
         
         myLocationMinimumTemperatureLabel.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(10)
             $0.trailing.equalToSuperview().inset(16)
         }
-        
+    }
+    
+    func bindData(data: WeatherCardItemData) {
+        self.myLocationLabel.text = data.myLocationLabel
+        self.myLocationNameLabel.text = data.myLocationNameLabel
+        self.myLocationConditionLabel.text = data.myLocationConditionLabel
+        self.myLocationAverageTemperatureLabel.text = String(data.myLocationAverageTemperatureLabel) + "°"
+        self.myLocationMinimumTemperatureLabel.text = "최저: " + String(data.myLocationMinimumTemperatureLabel) + "°"
+        self.myLocationMaximumTemperatureLabel.text = "최고: " + String(data.myLocationMaximumTemperatureLabel) + "°"
+
     }
 }
