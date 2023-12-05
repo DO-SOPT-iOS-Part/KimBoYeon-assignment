@@ -13,9 +13,12 @@ import Then
 class ListViewController: BaseViewController {
     
     private let listView = ListView()
+    private let searchController = UISearchController(searchResultsController: nil)
+    private let editerButton = UIButton(type: .custom)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setSearchController()
     }
     
     override func loadView() {
@@ -24,6 +27,19 @@ class ListViewController: BaseViewController {
     
     override func setUI() {
         view.backgroundColor = .black
+        
+        searchController.do {
+            $0.searchBar.placeholder = "도시 또는 공항 검색"
+            $0.searchBar.searchBarStyle = .minimal
+            $0.obscuresBackgroundDuringPresentation = false
+            $0.hidesNavigationBarDuringPresentation = false
+        }
+        
+        editerButton.do {
+            $0.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
+            $0.tintColor = .white
+        }
+        
     }
     
     override func setDelegates() {
@@ -37,7 +53,22 @@ class ListViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = false
+    }
+    
+    func setSearchController() {
+        let customBarButtonItem = UIBarButtonItem(customView: editerButton)
+        navigationItem.rightBarButtonItem = customBarButtonItem
+        
+        navigationItem.searchController = searchController
+        navigationItem.title = "날씨"
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = false
+        self.navigationController?.navigationBar.barTintColor = .black
+        navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
 }
 
