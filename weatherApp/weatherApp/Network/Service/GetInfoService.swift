@@ -24,7 +24,7 @@ class GetInfoService {
         return request
     }
     
-    func PostRegisterData(name: String) async throws -> WeatherInfoDataModel {
+    func PostRegisterData(name: String) async throws -> WeatherItemResponse {
         do {
             let request = self.makeRequest(name: name)
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -44,10 +44,10 @@ class GetInfoService {
         
     }
     
-    private func parseUserInfoData(data: Data) -> WeatherInfoDataModel? {
+    private func parseUserInfoData(data: Data) -> WeatherItemResponse? {
         do {
             let jsonDecoder = JSONDecoder()
-            let result = try jsonDecoder.decode(WeatherInfoDataModel.self, from: data)
+            let result = try jsonDecoder.decode(WeatherItemResponse.self, from: data)
             return result
         } catch {
             print(error)

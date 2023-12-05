@@ -13,9 +13,14 @@ import Then
 class ListViewController: BaseViewController {
     
     private let listView = ListView()
+    var weatherList : [WeatherCardItemData] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Task {
+            await setWeatherInfo()
+        }
     }
     
     override func loadView() {
@@ -24,6 +29,36 @@ class ListViewController: BaseViewController {
     
     override func setUI() {
         view.backgroundColor = .black
+    }
+    
+    func convertTime(timezone: Int) -> String {
+        let timeZone = TimeZone(secondsFromGMT: timezone)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.timeZone = timeZone
+        let currentDate = Date()
+        let formattedTime = dateFormatter.string(from: currentDate)
+        return formattedTime
+    }
+    
+    private func setWeatherInfo() async {
+        let locationData = ["gongju", "suwon", "gumi", "iksan", "daegu", "cheongju", "mokpo", "busan", "seosan", "seoul"]
+        for i in locationData {
+            do {
+                let status = try await GetInfoService.shared.PostRegisterData(name: i)
+                let getInfo: WeatherCardItemData = WeatherCardItemData(myLocationLabel: status.name,
+                                                                       myLocationNameLabel:
+                                                                        convertTime(timezone: status.timezone),
+                                                                       myLocationConditionLabel: status.weather[0].main,
+                                                                       myLocationAverageTemperatureLabel: Int(status.main.temp),
+                                                                       myLocationMinimumTemperatureLabel: Int(status.main.tempMin),
+                                                                       myLocationMaximumTemperatureLabel: Int(status.main.tempMax))
+                weatherList.append(getInfo)
+            } catch {
+                print(error)
+            }
+        }
+        listView.listCollectionView.reloadData()
     }
     
     override func setDelegates() {
@@ -45,7 +80,7 @@ extension ListViewController: UICollectionViewDelegate {}
 
 extension ListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        3
+        return weatherList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
