@@ -13,14 +13,12 @@ import Then
 class ListViewController: BaseViewController {
     
     private let listView = ListView()
-    var weatherList : [WeatherCardItemData] = []
+    private let searchController = UISearchController(searchResultsController: nil)
+    private let editerButton = UIButton(type: .custom)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        Task {
-            await setWeatherInfo()
-        }
+        setSearchController()
     }
     
     override func loadView() {
@@ -29,36 +27,19 @@ class ListViewController: BaseViewController {
     
     override func setUI() {
         view.backgroundColor = .black
-    }
-    
-    func convertTime(timezone: Int) -> String {
-        let timeZone = TimeZone(secondsFromGMT: timezone)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm"
-        dateFormatter.timeZone = timeZone
-        let currentDate = Date()
-        let formattedTime = dateFormatter.string(from: currentDate)
-        return formattedTime
-    }
-    
-    private func setWeatherInfo() async {
-        let locationData = ["gongju", "suwon", "gumi", "iksan", "daegu", "cheongju", "mokpo", "busan", "seosan", "seoul"]
-        for i in locationData {
-            do {
-                let status = try await GetInfoService.shared.PostRegisterData(name: i)
-                let getInfo: WeatherCardItemData = WeatherCardItemData(myLocationLabel: status.name,
-                                                                       myLocationNameLabel:
-                                                                        convertTime(timezone: status.timezone),
-                                                                       myLocationConditionLabel: status.weather[0].main,
-                                                                       myLocationAverageTemperatureLabel: Int(status.main.temp),
-                                                                       myLocationMinimumTemperatureLabel: Int(status.main.tempMin),
-                                                                       myLocationMaximumTemperatureLabel: Int(status.main.tempMax))
-                weatherList.append(getInfo)
-            } catch {
-                print(error)
-            }
+        
+        searchController.do {
+            $0.searchBar.placeholder = "도시 또는 공항 검색"
+            $0.searchBar.searchBarStyle = .minimal
+            $0.obscuresBackgroundDuringPresentation = false
+            $0.hidesNavigationBarDuringPresentation = false
         }
-        listView.listCollectionView.reloadData()
+        
+        editerButton.do {
+            $0.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
+            $0.tintColor = .white
+        }
+        
     }
     
     override func setDelegates() {
@@ -72,7 +53,22 @@ class ListViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = false
+    }
+    
+    func setSearchController() {
+        let customBarButtonItem = UIBarButtonItem(customView: editerButton)
+        navigationItem.rightBarButtonItem = customBarButtonItem
+        
+        navigationItem.searchController = searchController
+        navigationItem.title = "날씨"
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = false
+        self.navigationController?.navigationBar.barTintColor = .black
+        navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
 }
 
@@ -80,7 +76,7 @@ extension ListViewController: UICollectionViewDelegate {}
 
 extension ListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return weatherList.count
+        return weatherCardItemData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -91,7 +87,7 @@ extension ListViewController: UICollectionViewDataSource {
     func collectionView(_ listCollectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let item = listCollectionView.dequeueReusableCell(withReuseIdentifier: ListCardCollectionViewCell.identifier,
                                                                 for: indexPath) as? ListCardCollectionViewCell else {return UICollectionViewCell()}
-        item.bindData(data: weatherList[indexPath.row])
+        item.bindData(data: weatherCardItemData[indexPath.row])
         return item
     }
 }

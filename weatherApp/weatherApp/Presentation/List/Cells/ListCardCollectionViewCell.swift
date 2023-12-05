@@ -13,7 +13,7 @@ import SnapKit
 class ListCardCollectionViewCell: UICollectionViewCell, CollectionViewCellRegisterDequeueProtocol {
     
     static let identifier: String = "ListCardCollectionViewCell"
-
+    
     private let myLocationImageView = UIImageView()
     private let myLocationLabel = UILabel()
     private let myLocationNameLabel = UILabel()
@@ -23,10 +23,10 @@ class ListCardCollectionViewCell: UICollectionViewCell, CollectionViewCellRegist
     private let myLocationMaximumTemperatureLabel = UILabel()
     
     override init(frame: CGRect) {
-            super.init(frame: frame)
+        super.init(frame: frame)
         self.setUI()
         self.setLayout()
-        }
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -120,9 +120,8 @@ class ListCardCollectionViewCell: UICollectionViewCell, CollectionViewCellRegist
         self.myLocationLabel.text = data.myLocationLabel
         self.myLocationNameLabel.text = data.myLocationNameLabel
         self.myLocationConditionLabel.text = data.myLocationConditionLabel
-        self.myLocationAverageTemperatureLabel.text = String(data.myLocationAverageTemperatureLabel) + "°"
-        self.myLocationMinimumTemperatureLabel.text = "최저: " + String(data.myLocationMinimumTemperatureLabel) + "°"
-        self.myLocationMaximumTemperatureLabel.text = "최고: " + String(data.myLocationMaximumTemperatureLabel) + "°"
-
+        self.myLocationAverageTemperatureLabel.text = data.myLocationAverageTemperatureLabel
+        self.myLocationMinimumTemperatureLabel.text = data.myLocationMinimumTemperatureLabel
+        self.myLocationMaximumTemperatureLabel.text = data.myLocationMaximumTemperatureLabel
     }
 }
