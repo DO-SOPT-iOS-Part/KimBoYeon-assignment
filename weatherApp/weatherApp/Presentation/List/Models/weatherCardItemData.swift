@@ -7,9 +7,6 @@
 
 import Foundation
 
-
-var weatherList : [WeatherCardItemData] = []
-
 struct WeatherCardItemData {
     let myLocationLabel: String
     let myLocationNameLabel: String
